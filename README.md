@@ -1,5 +1,5 @@
 # Notes for ComS 309's Project
-1. Please create your branch in the GitLab . 
+1. Please create your own branch in the GitLab . 
 
     To create a new branch in Gitlab, you could make it on the website or using the following command:
     ```bash
@@ -11,7 +11,7 @@
     ```
     And then use
     ```bash
-    git checkout [name_of_your_new_branch]
+    $ git checkout [name_of_your_new_branch]
     ```
     You can check more information [here](https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches)
 2. Readme.md file in gitlab/github is using the markdown syntax.To get more information about markdown syntax, you can check this [link](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet). I would suggest you using Visual Studio Code to write the Readme.md file as I do. So you can get a real-time preview about what you are doing.
