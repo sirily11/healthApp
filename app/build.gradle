@@ -10,7 +10,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.example.qiweili.healthapp"
-        minSdkVersion 24
+        minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
