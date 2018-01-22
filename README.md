@@ -4,6 +4,7 @@
     To create a new branch in Gitlab, you could make it on the website or using the following command:
     ```bash
     $ git checkout -b [name_of_your_new_branch]
+    $ git push --set-upstream origin Test
     ```
     You can always check other's branch with following command:
     ```bash
