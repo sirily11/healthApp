@@ -8,13 +8,21 @@
 
     <TextView
         android:id="@+id/HelloworldText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_width="303dp"
+        android:layout_height="46dp"
+
+        android:autoText="false"
+        android:fontFamily="sans-serif"
+        android:lineSpacingExtra="10sp"
+        android:text="Welcome to use Health!"
+        android:textAlignment="center"
+        android:textColorLink="@android:color/holo_blue_bright"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.249" />
 
     <Button
         android:id="@+id/randomButton"
@@ -23,7 +31,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
-        android:text="Button"
+        android:background="@color/colorPrimaryDark"
+        android:text="Login"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/HelloworldText" />

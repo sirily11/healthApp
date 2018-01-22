@@ -1,5 +1,6 @@
 package com.example.qiweili.healthapp
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
@@ -11,16 +12,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         randomButton.setOnClickListener {
-            HelloworldText.text = randomChoice()
+            val intent = Intent(this,Main2Activity::class.java)
+            startActivity(intent)
+
+
         }
     }
 
-    fun randomChoice():String{
-        val Array = arrayOf("1","2","3")
-        val random = Random()
-        val num = random.nextInt(Array.size)
 
-        return Array[num]
-
-    }
 }
