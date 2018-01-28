@@ -15,8 +15,5 @@ class Main2Activity : AppCompatActivity() {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
-        val mGoogleSignInClient : GoogleSignInClient;
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
     }
 }
