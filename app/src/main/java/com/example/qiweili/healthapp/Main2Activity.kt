@@ -7,7 +7,13 @@ import android.view.View
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main2.*
+import android.widget.Toast
 
+
+/**
+ * This is the login page which required users to input their password
+ * and email.
+ */
 
 class Main2Activity : AppCompatActivity() {
     val mAuth = FirebaseAuth.getInstance()
@@ -29,10 +35,19 @@ class Main2Activity : AppCompatActivity() {
                     .addOnCompleteListener(this,
                             OnCompleteListener { task ->
                                 if(task.isSuccessful){
-                                    val intent = Intent(this,Main3Activity::class.java)
+                                    val intent = Intent(this,DotaActivity::class.java)
+                                    val context = applicationContext
+                                    val text = "Successful"
+                                    val duration = Toast.LENGTH_SHORT
+                                    val toast = Toast.makeText(context, text, duration)
+                                    toast.show()
                                     startActivity(intent)
                                 }else{
-
+                                    val context = applicationContext
+                                    val text = "Wrong email or password combination!"
+                                    val duration = Toast.LENGTH_SHORT
+                                    val toast = Toast.makeText(context, text, duration)
+                                    //toast.show()
                                 }
                             })
         }else{

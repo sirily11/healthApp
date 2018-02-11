@@ -20,7 +20,12 @@
         <activity
             android:name=".Main3Activity"
             android:label="@string/title_activity_main3"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DotaDataactivity"
+            android:label="@string/title_activity_dota_dataactivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".DotaActivity"></activity>
     </application>
 
 </manifest>
