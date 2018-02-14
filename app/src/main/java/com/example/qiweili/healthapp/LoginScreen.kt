@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_main2.*
+import kotlinx.android.synthetic.main.activity_loginscreen.*
 import android.widget.Toast
 
 
@@ -15,17 +15,16 @@ import android.widget.Toast
  * and email.
  */
 
-class Main2Activity : AppCompatActivity() {
+class LoginScreen : AppCompatActivity() {
     val mAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main2)
+        setContentView(R.layout.activity_loginscreen)
         signInBtn.setOnClickListener(View.OnClickListener {
             View -> login()
         })
     }
-
     private fun login(){
         val email = userName.text.toString()
         val password = password.text.toString()
@@ -35,7 +34,7 @@ class Main2Activity : AppCompatActivity() {
                     .addOnCompleteListener(this,
                             OnCompleteListener { task ->
                                 if(task.isSuccessful){
-                                    val intent = Intent(this,DotaActivity::class.java)
+                                    val intent = Intent(this, HomeScreen::class.java)
                                     val context = applicationContext
                                     val text = "Successful"
                                     val duration = Toast.LENGTH_SHORT
@@ -47,7 +46,7 @@ class Main2Activity : AppCompatActivity() {
                                     val text = "Wrong email or password combination!"
                                     val duration = Toast.LENGTH_SHORT
                                     val toast = Toast.makeText(context, text, duration)
-                                    //toast.show()
+                                    toast.show()
                                 }
                             })
         }else{

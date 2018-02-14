@@ -16,16 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main2Activity" />
-        <activity
-            android:name=".Main3Activity"
-            android:label="@string/title_activity_main3"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".LoginScreen" />
         <activity
             android:name=".DotaDataactivity"
             android:label="@string/title_activity_dota_dataactivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DotaActivity"></activity>
+        <activity android:name=".HomeScreen"></activity>
     </application>
 
 </manifest>

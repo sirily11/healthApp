@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.qiweili.healthapp.Main2Activity">
+    tools:context="com.example.qiweili.healthapp.LoginScreen">
 
     <EditText
         android:id="@+id/password"
@@ -16,13 +16,15 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Password"
+        android:hint="Input your password"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.341"
         app:layout_constraintStart_toEndOf="@+id/PasswordText"
         app:layout_constraintTop_toBottomOf="@+id/userName"
-        app:layout_constraintVertical_bias="0.17000002" />
+        app:layout_constraintVertical_bias="0.17000002"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="12dp" />
 
     <EditText
         android:id="@+id/userName"
@@ -33,7 +35,7 @@
         android:layout_marginTop="104dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="UserName"
+        android:hint="Input your user name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.243"
         app:layout_constraintStart_toEndOf="@+id/UserNameText"
@@ -51,7 +53,8 @@
         android:textStyle="bold"
         android:typeface="normal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/PasswordText"
@@ -68,7 +71,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UserNameText"
-        app:layout_constraintVertical_bias="0.26999998" />
+        app:layout_constraintVertical_bias="0.26999998"
+        android:layout_marginLeft="20dp" />
 
     <Button
         android:id="@+id/signInBtn"
@@ -81,7 +85,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.16000003" />
+        app:layout_constraintVertical_bias="0.16000003"
+        android:layout_marginRight="56dp" />
 
     <Button
         android:id="@+id/SignUp"
@@ -97,5 +102,7 @@
         app:layout_constraintHorizontal_bias="0.288"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.16000003" />
+        app:layout_constraintVertical_bias="0.16000003"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="32dp" />
 </android.support.constraint.ConstraintLayout>
