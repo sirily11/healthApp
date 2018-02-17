@@ -45,9 +45,6 @@ class FriendScreen : AppCompatActivity() {
         getData(this)
     }
 
-
-
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         println("Item is $item")
         if (myDrawerToggle?.onOptionsItemSelected(item)!!) {
