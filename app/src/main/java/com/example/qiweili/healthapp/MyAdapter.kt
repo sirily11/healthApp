@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.row_main.view.*
+import kotlinx.android.synthetic.main.row_main_friend.view.*
 
 
 /**
@@ -27,7 +27,7 @@ class MyAdapter(context: Context, data: List<DataAPI>) : RecyclerView.Adapter<Ho
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): HomeScreen.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
-        val cellForRow = layoutInflater.inflate(R.layout.row_main, parent, false)
+        val cellForRow = layoutInflater.inflate(R.layout.row_main_friend, parent, false)
         return HomeScreen.ViewHolder(cellForRow)
     }
 
