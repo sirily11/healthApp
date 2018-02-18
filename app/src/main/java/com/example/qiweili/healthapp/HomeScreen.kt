@@ -1,34 +1,39 @@
 package com.example.qiweili.healthapp
 
-import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.NavigationView
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import kotlinx.android.synthetic.main.activity_friend_screen.*
 import kotlinx.android.synthetic.main.activity_homescreen.*
+import kotlinx.android.synthetic.main.collapsing_toolbar.*
 
 
-class HomeScreen : AppCompatActivity(){
+
+class HomeScreen : AppCompatActivity() {
     //To create an drawerview toggle with optional type
     var myDrawerToggle: ActionBarDrawerToggle? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homescreen)
+        setSupportActionBar(toolbar)
 
         //Create a view layout management
         DataView.layoutManager = LinearLayoutManager(DataView.context)
-
-        //initialize the drawerview toggle object
-        val drawer_layout = Drawer_menu(this,this@HomeScreen,drawer_layout_home,nav_home)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle("Home")
+        //-----------------------Drawer menu--------------------------------------------------------
+        val drawer_layout = Drawer_menu(this, this@HomeScreen, drawer_layout_home,nav_Home )
         myDrawerToggle = drawer_layout.mDrawerToggle
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         drawer_layout.setListener()
+        //-----------------------Drawer menu--------------------------------------------------------
     }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         println("Item is $item")
         if (myDrawerToggle?.onOptionsItemSelected(item)!!) {
@@ -36,6 +41,7 @@ class HomeScreen : AppCompatActivity(){
         }
         return super.onOptionsItemSelected(item)
     }
+
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
     }

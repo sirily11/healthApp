@@ -7,11 +7,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/friendscreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.example.qiweili.healthapp.FriendScreen">
+
+        <include layout= "@layout/collapsing_toolbar" />
 
         <android.support.v7.widget.RecyclerView
 
@@ -21,13 +23,22 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+            />
+    </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/nav_friend"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="left"
-        app:menu="@menu/nav_menu" />
+
+    android:id="@+id/nav_friend"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:headerLayout="@layout/header_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="left"
+    app:menu="@menu/nav_menu"
+    />
+
 </android.support.v4.widget.DrawerLayout>

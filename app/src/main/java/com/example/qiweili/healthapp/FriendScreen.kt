@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.Toast
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_friend_screen.*
+import kotlinx.android.synthetic.main.collapsing_toolbar.*
 import okhttp3.*
 import java.io.IOException
 
@@ -23,23 +24,16 @@ class FriendScreen : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friend_screen)
-
+        setSupportActionBar(toolbar)
         friendlist.layoutManager = LinearLayoutManager(friendlist.context)
-        /**
-        myDrawerToggle = ActionBarDrawerToggle(this, drawer_layout_friend,
-                R.string.common_open_on_phone, R.string.mr_controller_close_description)
-        //add the toggle object
-        drawer_layout_friend.addDrawerListener(myDrawerToggle!!)
-        myDrawerToggle?.syncState()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        **/
-        val nav_view = nav_friend
+        supportActionBar?.setTitle("Friends")
 
-        val drawer_layout = Drawer_menu(this,this@FriendScreen,drawer_layout_friend,nav_view)
+        //-----------------------Drawer menu--------------------------------------------------------
+        val drawer_layout = Drawer_menu(this,this@FriendScreen,drawer_layout_friend,nav_friend)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         myDrawerToggle = drawer_layout.mDrawerToggle
         drawer_layout.setListener()
-
+        //-----------------------Drawer menu--------------------------------------------------------
         //called the function which will handle the data
         //comes from the internet
         getData(this)

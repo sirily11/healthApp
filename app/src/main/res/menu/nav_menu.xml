@@ -2,26 +2,38 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/nav_Home"
-        android:title="Home" />
 
-    <item android:id="@+id/nav_Friends"
+    <item android:id="@+id/nav_Home"
+        android:title="Home"
+        android:icon="@drawable/ic_layers_black_48dp"
+        />
+
+    <item
+        android:id="@+id/nav_Friends"
+        android:icon="@drawable/ic_group_black_48dp"
         android:title="Friends" />
 
     <item android:id="@+id/nav_Meal"
-        android:title="Meal" />
+        android:title="Meal"
+        android:icon="@drawable/ic_restaurant_black_48dp"
+        />
 
     <item android:id="@+id/nav_Profile"
+        android:icon="@drawable/ic_account_circle_black_48dp_2x"
         android:title="Profile" />
 
     <item android:id="@+id/nav_Walkout"
+        android:icon="@drawable/ic_fitness_center_black_48dp"
         android:title="Walkout" />
 
     <item android:id="@+id/nav_Leader_board"
+        android:icon="@drawable/ic_list_48pt_3x"
         android:title="Leader_board" />
 
     <item android:id="@+id/nav_settings"
-        android:title="settings" />
+        android:icon="@drawable/ic_settings_black_48dp"
+        android:title="settings"
+        />
 
 
 </menu>
