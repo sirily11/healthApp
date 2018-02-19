@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".LoginScreen" />
         <activity android:name=".HomeScreen" />
-        <activity android:name=".FriendScreen"></activity>
+        <activity android:name=".FriendScreen" />
+        <activity android:name=".SignUpScreen"></activity>
     </application>
 
 </manifest>

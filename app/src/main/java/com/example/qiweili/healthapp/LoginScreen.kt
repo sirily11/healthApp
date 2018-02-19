@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_loginscreen.*
 import android.widget.Toast
+import com.google.firebase.FirebaseApp
 
 
 /**
@@ -21,9 +22,14 @@ class LoginScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loginscreen)
+        FirebaseApp.initializeApp(this)
         signInBtn.setOnClickListener(View.OnClickListener {
             View -> login()
         })
+        SignUp.setOnClickListener {
+            val intent = Intent(this, SignUpScreen::class.java)
+            startActivity(intent)
+        }
     }
     private fun login(){
         val email = userName.text.toString()
