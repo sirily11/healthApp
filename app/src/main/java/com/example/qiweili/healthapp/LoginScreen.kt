@@ -41,6 +41,12 @@ class LoginScreen : AppCompatActivity() {
                             OnCompleteListener { task ->
                                 if(task.isSuccessful){
                                     val intent = Intent(this, HomeScreen::class.java)
+                                    /**
+                                     * If login is successful, then pass the user's ID to another screen
+                                     */
+                                    val userID = mAuth?.currentUser?.email
+                                    intent.putExtra("UserID",userID)
+                                    startActivity(intent)
                                     val context = applicationContext
                                     val text = "Successful"
                                     val duration = Toast.LENGTH_SHORT

@@ -37,7 +37,7 @@ class MyAdapter(context: Context, data: List<DataAPI>) : RecyclerView.Adapter<Ho
         val imageView = holder?.view?.imageView_profile
         Picasso.with(myContext)
                 .load(data.get(position).img_url)
-                .into(imageView);
+                .into(imageView)
 
     }
 }

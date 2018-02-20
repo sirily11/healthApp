@@ -19,7 +19,9 @@
         <activity android:name=".LoginScreen" />
         <activity android:name=".HomeScreen" />
         <activity android:name=".FriendScreen" />
-        <activity android:name=".SignUpScreen"></activity>
+        <activity android:name=".SignUpScreen" />
+        <activity android:name=".ProfileScreen">
+        </activity>
     </application>
 
 </manifest>
