@@ -62,7 +62,7 @@ class Drawer_menu(context:Context, activity:Activity,
             when(item.itemId){
                 R.id.nav_Home -> goto { mContext.startActivity(Intent(mActivity,HomeScreen::class.java)) }
                 R.id.nav_Leader_board -> goto {  }
-                R.id.nav_Meal -> goto {  }
+                R.id.nav_Meal -> goto { mContext.startActivity(Intent(mActivity, MyMeals::class.java)) }
                 R.id.nav_Profile -> goto {  }
                 R.id.nav_Walkout -> goto {  }
                 R.id.nav_settings -> goto {  }

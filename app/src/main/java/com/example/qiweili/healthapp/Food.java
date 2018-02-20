@@ -3,7 +3,6 @@ package com.example.qiweili.healthapp;
 /**
  * Created by Lucas on 2/13/2018.
  * Class for food items
- * food items belong to a meal so it is made a subclass
  */
 
 public class Food {

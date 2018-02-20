@@ -12,4 +12,7 @@
     <string name="delete_meal">Delete meal</string>
     <string name="page_name">My Meals</string>
     <string name="back">Back</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="water">View My Water Statistics</string>
+    <string name="my_water">My Water</string>
 </resources>

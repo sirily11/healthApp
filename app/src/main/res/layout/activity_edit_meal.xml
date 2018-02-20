@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,14 +21,35 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_edit_meal" />
+    <include
+        layout="@layout/content_edit_meal"
+        app:layout_anchor="@+id/textView"
+        app:layout_anchorGravity="bottom|center" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:text="@string/app_name"
+        android:layout_marginLeft="120dp"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="32dp"
+        />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="@string/edit_meal"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="24dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/backButton"
+        android:text="@string/back"
+        android:onClick="goBack"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

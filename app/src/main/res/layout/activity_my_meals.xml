@@ -52,6 +52,7 @@
         android:layout_gravity="bottom|right"
         android:onClick="deleteMeal"/>
 
+
     <include
         android:id="@+id/include"
         layout="@layout/my_meals" />
@@ -68,11 +69,22 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
         android:text="@string/page_name"
         android:textColor="@color/cardview_dark_background"
         android:textSize="24dp"
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="top|center" />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/water"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="12dp"
+        android:onClick="goToWater"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

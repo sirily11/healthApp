@@ -49,12 +49,16 @@ public class MyMeals extends AppCompatActivity {
     //called upon page load, gets the users meal data
     private void loadUser(){ }
 
+    public void goToWater(View view) {
+        Intent intent = new Intent(this, MyWater.class);
+        startActivity(intent);
+    }
+
     public void goBack(View view) {
         Intent intent = new Intent(this, HomeScreen.class);
         startActivity(intent);
         //this goes back to homepage
     }
-
 
     //called when the user touches the add food button
     public void addNewFood(View view){
@@ -70,7 +74,7 @@ public class MyMeals extends AppCompatActivity {
 
     //called when the user touches the delete food button
     public void deleteMeal(View view) {
-        Intent intent = new Intent(this, deleteFood.class);
+        Intent intent = new Intent(this, deleteMeal.class);
         startActivity(intent);
     }
 }
