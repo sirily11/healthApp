@@ -18,9 +18,10 @@
         app:layout_scrollFlags="scroll|enterAlwaysCollapsed|exitUntilCollapsed"
 
         >
-
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <ImageView
-
             android:id="@+id/homescreen_images_windows"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,6 +32,22 @@
 
             />
 
+        <TextView
+            android:id="@+id/windows_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cardview_light_background"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="30dp"
+            android:text="Welcome abc@abc,com"
+            android:textSize="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:shadowColor="@color/cardview_dark_background"
+            android:shadowDy="3"
+            android:shadowDx="3"
+            />
+        </RelativeLayout>
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"

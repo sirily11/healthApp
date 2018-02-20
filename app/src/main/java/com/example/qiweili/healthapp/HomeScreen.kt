@@ -6,8 +6,10 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_homescreen.*
 import kotlinx.android.synthetic.main.collapsing_toolbar.*
 
@@ -22,9 +24,13 @@ class HomeScreen : AppCompatActivity() {
         setContentView(R.layout.activity_homescreen)
         setSupportActionBar(toolbar)
         //------------------------------------------------------------------------------------------
-        val username = intent.getStringExtra("UserID")
+
+        val user = FirebaseAuth.getInstance().currentUser?.email
+        println("Welcome \n User name is $user")
+
         //Create a view layout management-----------------------------------------------------------
         DataView.layoutManager = LinearLayoutManager(DataView.context)
+        windows_text.text = "Welcome $user"
         supportActionBar?.setTitle("Home")
         //-----------------------Drawer menu--------------------------------------------------------
         val drawer_layout = Drawer_menu(this, this@HomeScreen, drawer_layout_home,nav_Home )
