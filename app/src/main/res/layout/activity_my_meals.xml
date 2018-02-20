@@ -25,34 +25,54 @@
         android:id="@+id/addnewfoodbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+@string/add_food"
+        android:text="@string/add_food"
         android:layout_gravity="bottom|left"
         android:onClick="addNewFood" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        android:onClick="goBack" />
 
     <Button
         android:id="@+id/editfoodbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+@string/edit_food"
+        android:text="@string/edit_meal"
         android:layout_gravity="bottom|center"
-        android:onClick="editFood" />
+        android:onClick="editMeal" />
 
     <Button
         android:id="@+id/deletefoodbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+@string/delete_food"
+        android:text="@string/delete_meal"
         android:layout_gravity="bottom|right"
-        android:onClick="deleteFood"/>
+        android:onClick="deleteMeal"/>
 
-    <include layout="@layout/my_meals" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/my_meals" />
 
-    <TextClock
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:targetApi="jelly_bean_mr1" />
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:layout_marginLeft="120dp"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="32dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="@string/page_name"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="24dp"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="top|center" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -16,9 +16,10 @@ public class MyMeals extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         loadUser();
         setSupportActionBar(toolbar);
-        final Button addFood = findViewById(R.id.addnewfoodbutton);
-        Button editFood = findViewById(R.id.editfoodbutton);
-        final Button deleteFood = findViewById(R.id.deletefoodbutton);
+        Button addFood = findViewById(R.id.addnewfoodbutton);
+        Button editMeal = findViewById(R.id.editfoodbutton);
+        Button deleteMeal = findViewById(R.id.deletefoodbutton);
+        Button back = findViewById(R.id.backButton);
 
         addFood.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -26,22 +27,32 @@ public class MyMeals extends AppCompatActivity {
             }
         });
 
-        editFood.setOnClickListener(new View.OnClickListener(){
+        editMeal.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                editFood(v);
+                editMeal(v);
             }
         });
 
-        deleteFood.setOnClickListener(new View.OnClickListener(){
+        deleteMeal.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-               deleteFood(v);
+               deleteMeal(v);
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                goBack(v);
             }
         });
     }
 
     //called upon page load, gets the users meal data
-    private void loadUser(){
+    private void loadUser(){ }
 
+    public void goBack(View view) {
+        Intent intent = new Intent(this, HomeScreen.class);
+        startActivity(intent);
+        //this goes back to homepage
     }
 
 
@@ -52,13 +63,13 @@ public class MyMeals extends AppCompatActivity {
     }
 
     //called when the user touches the edit food button
-    public void editFood(View view) {
+    public void editMeal(View view) {
         Intent intent = new Intent(this, EditMeal.class);
         startActivity(intent);
     }
 
     //called when the user touches the delete food button
-    public void deleteFood(View view) {
+    public void deleteMeal(View view) {
         Intent intent = new Intent(this, deleteFood.class);
         startActivity(intent);
     }
