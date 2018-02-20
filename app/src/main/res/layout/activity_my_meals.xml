@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.qiweili.healthapp.MyMeals">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <Button
+        android:id="@+id/addnewfoodbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+@string/add_food"
+        android:layout_gravity="bottom|left"
+        android:onClick="addNewFood" />
+
+    <Button
+        android:id="@+id/editfoodbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+@string/edit_food"
+        android:layout_gravity="bottom|center"
+        android:onClick="editFood" />
+
+    <Button
+        android:id="@+id/deletefoodbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+@string/delete_food"
+        android:layout_gravity="bottom|right"
+        android:onClick="deleteFood"/>
+
+    <include layout="@layout/my_meals" />
+
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:targetApi="jelly_bean_mr1" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</android.support.design.widget.CoordinatorLayout>
