@@ -16,7 +16,7 @@ public class Water {
     public int getOunces() {
         return ounces;
     }
-    
+
     public void setOunces(int ounces) {
         this.ounces = ounces;
     }
