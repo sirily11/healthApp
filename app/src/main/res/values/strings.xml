@@ -5,6 +5,14 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_dota_dataactivity">DotaDataactivity</string>
     <string name="title_activity_profile_page">ProfilePage</string>
+    <string name="add_food">Add food</string>
     <string name="mr_controller_close_description" />
     <string name="welcome_qiwei">Welcome Qiwei</string>
+    <string name="edit_meal">Edit meal</string>
+    <string name="delete_meal">Delete meal</string>
+    <string name="page_name">My Meals</string>
+    <string name="back">Back</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="water">View My Water Statistics</string>
+    <string name="my_water">My Water</string>
 </resources>

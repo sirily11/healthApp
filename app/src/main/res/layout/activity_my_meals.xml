@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.qiweili.healthapp.MyMeals">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <Button
+        android:id="@+id/addnewfoodbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_food"
+        android:layout_gravity="bottom|left"
+        android:onClick="addNewFood" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        android:onClick="goBack" />
+
+    <Button
+        android:id="@+id/editfoodbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_meal"
+        android:layout_gravity="bottom|center"
+        android:onClick="editMeal" />
+
+    <Button
+        android:id="@+id/deletefoodbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_meal"
+        android:layout_gravity="bottom|right"
+        android:onClick="deleteMeal"/>
+
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/my_meals" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:layout_marginLeft="120dp"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="32dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="@string/page_name"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="24dp"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="top|center" />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/water"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="12dp"
+        android:onClick="goToWater"
+        />
+
+</android.support.design.widget.CoordinatorLayout>

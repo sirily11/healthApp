@@ -16,12 +16,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".EditMeal" />
+        <activity android:name=".ProfileScreen"/>
+        <activity android:name=".MyMeals" />
+        <activity android:name=".addFood" />
+        <activity android:name=".deleteMeal" />
         <activity android:name=".LoginScreen" />
         <activity android:name=".HomeScreen" />
         <activity android:name=".FriendScreen" />
         <activity android:name=".SignUpScreen" />
-        <activity android:name=".ProfileScreen">
-        </activity>
+        <activity android:name=".MyWater"></activity>
     </application>
 
 </manifest>

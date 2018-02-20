@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.qiweili.healthapp.deleteMeal">
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/back"
+        android:onClick="goBack"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/delete_meal"
+        android:textSize="32dp"
+        tools:layout_editor_absoluteX="108dp"
+        tools:layout_editor_absoluteY="29dp" />
+
+</android.support.constraint.ConstraintLayout>
