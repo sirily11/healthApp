@@ -26,6 +26,7 @@ class FriendScreen : AppCompatActivity() {
         setContentView(R.layout.activity_friend_screen)
         setSupportActionBar(toolbar)
         friendlist.layoutManager = LinearLayoutManager(friendlist.context)
+        windows_text.text = ""
         supportActionBar?.setTitle("Friends")
 
         //-----------------------Drawer menu--------------------------------------------------------

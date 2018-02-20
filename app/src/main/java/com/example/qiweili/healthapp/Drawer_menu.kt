@@ -8,11 +8,6 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
-import com.example.qiweili.healthapp.R.id.drawer_layout_friend
-import kotlinx.android.synthetic.main.activity_friend_screen.*
-import kotlinx.android.synthetic.main.activity_friend_screen.view.*
 
 /**
  *This is the drawer_menu class which is a class to
