@@ -1,10 +1,12 @@
-package com.example.qiweili.healthapp
+package com.example.qiweili.healthapp.friend
 
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.qiweili.healthapp.DataAPI
+import com.example.qiweili.healthapp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.row_main_friend.view.*
 

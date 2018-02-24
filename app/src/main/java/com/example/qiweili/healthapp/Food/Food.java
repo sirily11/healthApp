@@ -1,4 +1,4 @@
-package com.example.qiweili.healthapp;
+package com.example.qiweili.healthapp.Food;
 
 /**
  * Created by Lucas on 2/13/2018.

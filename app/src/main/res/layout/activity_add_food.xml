@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.qiweili.healthapp.addFood">
+    tools:context="com.example.qiweili.healthapp.Food.addFood">
     <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"

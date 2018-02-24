@@ -31,15 +31,21 @@ class HomeScreen : AppCompatActivity() {
         println("Welcome \n User name is $user")
 
         //Create a view layout management-----------------------------------------------------------
+
         DataView.layoutManager = LinearLayoutManager(DataView.context)
         windows_text.text = "Welcome $user"
         supportActionBar?.setTitle("Home")
+
         //-----------------------Drawer menu--------------------------------------------------------
-        val drawer_layout = Drawer_menu(this, this@HomeScreen, drawer_layout_home,nav_Home )
+
+        val drawer_layout = Drawer_menu(this,
+                this@HomeScreen, drawer_layout_home, nav_Home)
+
         myDrawerToggle = drawer_layout.mDrawerToggle
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         drawer_layout.setListener()
+
         //-----------------------Drawer menu--------------------------------------------------------
 
     }

@@ -1,16 +1,16 @@
-package com.example.qiweili.healthapp
+package com.example.qiweili.healthapp.friend
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.NavigationView
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import com.example.qiweili.healthapp.DataAPI
+import com.example.qiweili.healthapp.Drawer_menu
+import com.example.qiweili.healthapp.R
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_friend_screen.*
 import kotlinx.android.synthetic.main.collapsing_toolbar.*
@@ -30,7 +30,7 @@ class FriendScreen : AppCompatActivity() {
         supportActionBar?.setTitle("Friends")
 
         //-----------------------Drawer menu--------------------------------------------------------
-        val drawer_layout = Drawer_menu(this,this@FriendScreen,drawer_layout_friend,nav_friend)
+        val drawer_layout = Drawer_menu(this, this@FriendScreen, drawer_layout_friend, nav_friend)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         myDrawerToggle = drawer_layout.mDrawerToggle
         drawer_layout.setListener()

@@ -1,4 +1,4 @@
-package com.example.qiweili.healthapp;
+package com.example.qiweili.healthapp.Food;
 
 /**
  * Class for water objects

@@ -8,6 +8,9 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
+import com.example.qiweili.healthapp.friend.FriendScreen
+import com.example.qiweili.healthapp.Food.MyMeals
+import com.example.qiweili.healthapp.profile.ProfileScreen
 
 /**
  *This is the drawer_menu class which is a class to
@@ -61,8 +64,7 @@ class Drawer_menu(context:Context, activity:Activity,
                 R.id.nav_Profile -> goto { mContext.startActivity(Intent(mActivity, ProfileScreen::class.java)) }
                 R.id.nav_Walkout -> goto {  }
                 R.id.nav_settings -> goto {  }
-                R.id.nav_Friends -> goto {mContext.startActivity(Intent(mActivity,FriendScreen::class.java))}
-
+                R.id.nav_Friends -> goto { mContext.startActivity(Intent(mActivity, FriendScreen::class.java)) }
             }
             true
         }
