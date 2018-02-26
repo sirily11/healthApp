@@ -7,6 +7,7 @@ package com.example.qiweili.healthapp.Food;
 
 public class Food {
 
+
     private String name;
     private int calories;
     private int protein;
