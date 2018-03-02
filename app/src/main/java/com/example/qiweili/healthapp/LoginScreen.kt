@@ -98,10 +98,7 @@ class LoginScreen : AppCompatActivity() {
                         Log.w("Loginscreen", "signInWithCredential:failure", task.exception)
                         loginWithGoogle(null)
                     }
-
-                    // ...
                 }
-
     }
     private fun loginWithGoogle(user : FirebaseUser?){
        if(user != null){
@@ -112,7 +109,6 @@ class LoginScreen : AppCompatActivity() {
 
        }
     }
-
 
     private fun login(){
         val email = userName.text.toString()

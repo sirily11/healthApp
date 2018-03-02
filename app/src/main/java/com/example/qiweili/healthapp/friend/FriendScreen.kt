@@ -29,12 +29,11 @@ class FriendScreen : AppCompatActivity() {
         windows_text.text = ""
         supportActionBar?.setTitle("Friends")
 
-        //-----------------------Drawer menu--------------------------------------------------------
         val drawer_layout = Drawer_menu(this, this@FriendScreen, drawer_layout_friend, nav_friend)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         myDrawerToggle = drawer_layout.mDrawerToggle
         drawer_layout.setListener()
-        //-----------------------Drawer menu--------------------------------------------------------
+
         //called the function which will handle the data
         //comes from the internet
         getData(this)

@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import com.example.qiweili.healthapp.DataAPI
 import com.example.qiweili.healthapp.HomeScreen
 import com.example.qiweili.healthapp.R
+import com.google.android.gms.fitness.data.DataSource
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.row_main_friend.view.*
+import kotlinx.android.synthetic.main.row_main_home.view.*
 
 
 /**
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.row_main_friend.view.*
  * as you want
  */
 
-class MyAdapter(context: Context, data: List<DataAPI>) : RecyclerView.Adapter<HomeScreen.ViewHolder>() {
+class MyAdapter(context: Context, data: List<HealthData>?) : RecyclerView.Adapter<HomeScreen.ViewHolder>() {
     /**
      * Private varibles
      */
@@ -25,22 +26,18 @@ class MyAdapter(context: Context, data: List<DataAPI>) : RecyclerView.Adapter<Ho
     private val myContext = context
 
     override fun getItemCount(): Int {
-        return data.size
+        val size : Int = if(data != null) data!!.size else 0
+        return size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): HomeScreen.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
-        val cellForRow = layoutInflater.inflate(R.layout.row_main_friend, parent, false)
+        val cellForRow = layoutInflater.inflate(R.layout.row_main_home, parent, false)
         return HomeScreen.ViewHolder(cellForRow)
     }
 
     override fun onBindViewHolder(holder: HomeScreen.ViewHolder?, position: Int) {
-        holder?.view?.first_name?.text = data.get(position).first_name
-        holder?.view?.last_name?.text = data.get(position).last_name
-        val imageView = holder?.view?.imageView_profile
-        Picasso.with(myContext)
-                .load(data.get(position).img_url)
-                .into(imageView)
-
+        holder?.view?.data?.text = data?.get(position)?.data?.toString()
+        holder?.view?.description?.text = data?.get(position)?.description
     }
 }
