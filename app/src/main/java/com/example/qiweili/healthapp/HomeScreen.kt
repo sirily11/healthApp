@@ -36,6 +36,9 @@ class HomeScreen : AppCompatActivity() {
     var mClient: GoogleApiClient? = null
     var mListener: OnDataPointListener? = null
     val code = 1
+    /**
+     * Health data map. <Health Data Type, Value>
+     */
     var healthDataMap = mutableMapOf<String, Int>()
     var healthDataList = mutableListOf<HealthData>()
 
@@ -113,8 +116,6 @@ class HomeScreen : AppCompatActivity() {
 
 
     fun readDaily() {
-
-        var isSuccessFul = false
 
         Fitness.getHistoryClient(this, GoogleSignIn.getLastSignedInAccount(this))
                 .readDailyTotalFromLocalDevice(DataType.TYPE_STEP_COUNT_DELTA)
