@@ -1,15 +1,10 @@
-package com.example.qiweili.healthapp
+package com.example.qiweili.healthapp.pages
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_firstscreen.*
-import android.Manifest.permission.WRITE_CALENDAR
-import android.content.pm.PackageManager
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.util.Log
+import com.example.qiweili.healthapp.R
 import io.vrinda.kotlinpermissions.PermissionCallBack
 import io.vrinda.kotlinpermissions.PermissionsActivity
 
@@ -24,7 +19,7 @@ class MainActivity : PermissionsActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_firstscreen)
         LoginBtn.setOnClickListener {
-            val intent = Intent(this, LoginScreen::class.java)
+            val intent = Intent(this, HomeScreen::class.java)
             startActivity(intent)
         }
 

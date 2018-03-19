@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/row_main_home"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
-        android:layout_width="400dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginEnd="0dp"
@@ -21,8 +22,16 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/enable_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/ic_expand_more_black_48dp" />
 
             <TextView
                 android:id="@+id/description"
@@ -35,13 +44,14 @@
                 android:id="@+id/data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/description"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/description"
-                android:layout_alignLeft="@+id/description"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="16dp"
                 android:text="100"
-                android:textSize="40dp" />
+                android:textSize="40sp"/>
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

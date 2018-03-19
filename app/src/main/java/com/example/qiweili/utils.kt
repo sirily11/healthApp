@@ -16,10 +16,6 @@ class utils {
             return mDatabase
         }
 
-
-
-
-
     }
 
 }

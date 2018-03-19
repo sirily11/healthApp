@@ -1,4 +1,4 @@
-package com.example.qiweili.healthapp
+package com.example.qiweili.healthapp.pages
 
 import android.app.Activity
 import android.content.Intent
@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import com.example.qiweili.healthapp.R
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_sign_up_screen.*
 
 

@@ -1,4 +1,4 @@
-package com.example.qiweili.healthapp
+package com.example.qiweili.healthapp.pages
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -9,7 +9,6 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_loginscreen.*
 import android.widget.Toast
-import com.example.qiweili.healthapp.R.color.common_google_signin_btn_text_light
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.FirebaseApp
 import com.google.android.gms.auth.api.Auth
@@ -17,13 +16,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.AuthResult
-import com.google.android.gms.tasks.Task
-import android.support.annotation.NonNull
+import com.example.qiweili.healthapp.R
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.AuthCredential
-
-
 
 
 /**

@@ -1,9 +1,8 @@
-package com.example.qiweili.healthapp
+package com.example.qiweili.healthapp.pages
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -11,52 +10,45 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import com.amitshekhar.DebugDB
+import com.example.qiweili.healthapp.DatabaseHelper
+import com.example.qiweili.healthapp.Drawer_menu
+import com.example.qiweili.healthapp.R
 import com.example.qiweili.healthapp.health.HealthData
 import com.example.qiweili.healthapp.health.MyAdapter
-import com.example.qiweili.utils
+import com.example.qiweili.healthapp.health.home_details
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.DataType
 import com.google.android.gms.fitness.data.Field
-import com.google.android.gms.fitness.request.OnDataPointListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_homescreen.*
 import kotlinx.android.synthetic.main.collapsing_toolbar.*
+import kotlinx.android.synthetic.main.row_main_home.view.*
 import kotlin.math.roundToInt
 
 
 class HomeScreen : AppCompatActivity() {
     //To create an drawerview toggle with optional type
     var myDrawerToggle: ActionBarDrawerToggle? = null
-    var mClient: GoogleApiClient? = null
-    var mListener: OnDataPointListener? = null
     val code = 1
     /**
      * Health data map. <Health Data Type, Value>
      */
     var healthDataMap = mutableMapOf<String, Int>()
     var healthDataList = mutableListOf<HealthData>()
+    var db : DatabaseHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homescreen)
         setSupportActionBar(toolbar)
 
-        val user = FirebaseAuth.getInstance().currentUser?.email
-        DataView.layoutManager = LinearLayoutManager(DataView.context)
-
-        //windows_text.text = "Welcome $user"
-
-        supportActionBar?.setTitle("Home")
         val drawer_layout = Drawer_menu(this,
                 this@HomeScreen, drawer_layout_home, nav_Home)
-        myDrawerToggle = drawer_layout.mDrawerToggle
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         drawer_layout.setListener()
 
         val fitnessOptions =
@@ -65,6 +57,15 @@ class HomeScreen : AppCompatActivity() {
                         .addDataType(DataType.TYPE_STEP_COUNT_CUMULATIVE)
                         .build()
 
+        myDrawerToggle = drawer_layout.mDrawerToggle
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle("Home")
+        /**
+         * Create a database
+         */
+        db = DatabaseHelper(this, "Health.db")
+
+        DataView.layoutManager = LinearLayoutManager(DataView.context)
         if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), fitnessOptions)) {
             GoogleSignIn.requestPermissions(
                     this,
@@ -72,40 +73,19 @@ class HomeScreen : AppCompatActivity() {
                     GoogleSignIn.getLastSignedInAccount(this),
                     fitnessOptions)
         } else {
+            DebugDB.getAddressLog()
             subscribe()
             readDaily()
-            healthDataList.add(HealthData(null,null))
-            healthDataList.add(HealthData(null,null))
-            readFromDatabase("Calories",0)
-            readFromDatabase("Steps",1)
-            DataView.adapter = MyAdapter(this, data = healthDataList)
-        }
-    }
-
-    fun updateRead(description: String,index : Int) {
-        val timerHandler = Handler()
-        var updater: Runnable? = null
-        updater = Runnable {
             try {
-                updateData()
-                //healthDataList.removeAt(index)
-
-
-            } catch (e: Exception) {
+                readFromDatabase("Steps", 1)
+            }catch (e : IndexOutOfBoundsException){
 
             }
-            healthDataList.set(index,HealthData(healthDataMap.get(description), description))
+            DataView.adapter = MyAdapter(this, data = healthDataList)
 
-            DataView.adapter.notifyDataSetChanged()
-
-            timerHandler.postDelayed(updater, 5000)
         }
-        timerHandler.post(updater)
     }
 
-    fun updateData() {
-            readDaily()
-    }
 
     fun subscribe() {
         Fitness.getRecordingClient(this, GoogleSignIn.getLastSignedInAccount(this))
@@ -125,6 +105,7 @@ class HomeScreen : AppCompatActivity() {
                         total = dataset.dataPoints[0].getValue(Field.FIELD_STEPS).asInt()
                         healthDataMap.put("Steps", total)
                         writeToDatabase(total, "Steps")
+                        readFromDatabase("Steps", 1)
                     } else {
 
                     }
@@ -137,7 +118,7 @@ class HomeScreen : AppCompatActivity() {
                     if (!dataset.isEmpty) {
                         total = dataset.dataPoints[0].getValue(Field.FIELD_CALORIES).asFloat().roundToInt()
                         healthDataMap.put("Calories", total)
-                        writeToDatabase(total, "Calories")
+                        //writeToDatabase(total, "Calories")
                     } else {
 
                     }
@@ -145,27 +126,20 @@ class HomeScreen : AppCompatActivity() {
     }
 
     fun readFromDatabase(description: String,index: Int) {
-        val userUID = FirebaseAuth.getInstance().currentUser?.uid
-        val database = utils.getDatabase()
-        val myRef = database.getReference("HealthApp/Data/$userUID/HealthData/${description}")
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-                Log.i("Error", "Error")
-            }
-
-            override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                val value = dataSnapshot?.getValue(Int::class.java)
-                healthDataMap.put(description, value!!)
-                updateRead(description,index)
-            }
-        })
+        val account_id = FirebaseAuth.getInstance().currentUser?.uid
+        val steps = db?.getSteps(account_id!!)
+        healthDataList.add(HealthData(steps,"Steps"))
     }
 
     fun writeToDatabase(data: Int, description: String) {
-        val userUID = FirebaseAuth.getInstance().currentUser?.uid
-        val database = utils.getDatabase()
-        val myRef = database.getReference("HealthApp/Data/$userUID/HealthData/${description}")
-        myRef.setValue(data)
+        val account_id = FirebaseAuth.getInstance().currentUser?.uid
+        val success = db?.insertData(account_id,"Qiwei",data,null,null,null,null,null)
+        if(success == true){
+            //Toast.makeText(this,"Success " + data,Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(this,"False",Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -186,8 +160,12 @@ class HomeScreen : AppCompatActivity() {
         }
     }
 
-
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-
+        init {
+           view.card_view.setOnClickListener {
+               val intent = Intent(view.context, home_details::class.java)
+               view.context.startActivity(intent)
+           }
+        }
     }
 }

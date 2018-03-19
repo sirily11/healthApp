@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.qiweili.healthapp">
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BODY_SENSORS" />
 
@@ -11,8 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".MainActivity">
+        <activity android:name=".pages.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,12 +24,12 @@
         <activity android:name=".Food.MyMeals" />
         <activity android:name=".Food.addFood" />
         <activity android:name=".Food.deleteMeal" />
-        <activity android:name=".LoginScreen" />
-        <activity android:name=".HomeScreen" />
+        <activity android:name=".pages.LoginScreen" />
+        <activity android:name=".pages.HomeScreen" />
         <activity android:name=".friend.FriendScreen" />
-        <activity android:name=".SignUpScreen" />
-        <activity android:name=".Food.MyWater"></activity>
+        <activity android:name=".pages.SignUpScreen" />
+        <activity android:name=".Food.MyWater" />
+        <activity android:name=".health.home_details" />
     </application>
-
 
 </manifest>
