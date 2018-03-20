@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.qiweili.healthapp.Food.MyMeals;
 import com.example.qiweili.healthapp.R;
 
 public class addFood extends AppCompatActivity {
@@ -19,15 +18,15 @@ public class addFood extends AppCompatActivity {
         Button backButton = findViewById(R.id.backButton);
 
         backButton.setOnClickListener(
-                new View.OnClickListener(){
-            public void onClick(View v){
-                goBack(v);
-            }
-        });
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        goBack(v);
+                    }
+                });
     }
 
-        public void goBack(View view) {
-            Intent intent = new Intent(this, MyMeals.class);
-            startActivity(intent);
-        }
+    public void goBack(View view) {
+        Intent intent = new Intent(this, MyMeals.class);
+        startActivity(intent);
+    }
 }

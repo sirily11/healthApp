@@ -21,7 +21,6 @@ class home_details : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_details)
         setSupportActionBar(toolbar)
-        val graph = GraphView(mutableListOf(2.0,3.0,4.0,10.0))
         createTab()
 
     }

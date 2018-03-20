@@ -1,22 +1,43 @@
 package com.example.qiweili.healthapp.health.Fragments
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import com.example.qiweili.utils
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 
 /**
  * Created by qiweili on 2018/3/18.
  */
-class SectionPageAdapter(fm: FragmentManager?, val listSeries : MutableList<LineGraphSeries<DataPoint>>) : FragmentPagerAdapter(fm) {
+class SectionPageAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm) {
 
 
     override fun getItem(position: Int): Fragment? {
         when(position){
-            0 -> { return Tab1Fragment(listSeries[position])}
-            1 -> return Tab2Fragment()
-            2 -> return Tab3Fragment()
+            0 -> {
+                val bundle = Bundle()
+                bundle.putDoubleArray("Week",utils.randomDoubleListGenerator(0.0,2000.0,7).toDoubleArray())
+                val tab1 = Tab1Fragment()
+                tab1.arguments = bundle
+                return tab1
+            }
+            1 -> {
+                val bundle = Bundle()
+                bundle.putDoubleArray("Month",utils.randomDoubleListGenerator(0.0,2000.0,30).toDoubleArray())
+                val tab2 = Tab2Fragment()
+                tab2.arguments = bundle
+                return tab2
+            }
+            2 -> {
+                val bundle = Bundle()
+                bundle.putDoubleArray("Year",utils.randomDoubleListGenerator(0.0,2000.0,365).toDoubleArray())
+                val tab3 = Tab3Fragment()
+                tab3.arguments = bundle
+                return tab3
+            }
+
             else -> return null
         }
     }

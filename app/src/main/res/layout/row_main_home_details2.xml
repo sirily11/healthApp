@@ -21,14 +21,14 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="10dp"
-                android:id="@+id/graphView" />
+                android:id="@+id/graphView2" />
 
             <TextView
                 android:id="@+id/current_steps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/graphView"
+                android:layout_below="@+id/graphView2"
                 android:textSize="20sp"
                 android:text="Steps: 400" />
 

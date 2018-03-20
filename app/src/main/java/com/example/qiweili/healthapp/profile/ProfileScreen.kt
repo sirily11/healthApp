@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.example.qiweili.healthapp.DatabaseHelper
 import com.example.qiweili.healthapp.Drawer_menu
 import com.example.qiweili.healthapp.R
 import com.example.qiweili.utils
@@ -22,47 +23,39 @@ import kotlinx.android.synthetic.main.content_profile_page.*
 
 class ProfileScreen : AppCompatActivity() {
     var myDrawerToggle: ActionBarDrawerToggle? = null
+    val db = DatabaseHelper(this,utils.databaseName)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_page)
         setSupportActionBar(toolbar)
         supportActionBar?.setTitle("Profile")
-
+        val account_id = FirebaseAuth.getInstance().currentUser?.uid
 
         val drawer_layout = Drawer_menu(this, this@ProfileScreen, drawer_layout_profile, nav_Profile)
         myDrawerToggle = drawer_layout.mDrawerToggle
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         drawer_layout.setListener()
-
-
-
+        try {
+            about_me.setText(db.getAboutme(account_id!!))
+        }catch (e : IllegalStateException){
+            about_me.setText("About me")
+        }
         about_me.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 hideSoftKeyboard(view = view)
             }
         }
 
-        val userUID = FirebaseAuth.getInstance().currentUser?.uid
-        val database = utils.getDatabase()
-        val myRef = database.getReference("$userUID/aboutme")
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val value = dataSnapshot.getValue(String::class.java)
-                about_me.setText(value)
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Log.w("Failed to read value.", error.toException())
-            }
-        })
         fab.setOnClickListener {
-
             view ->
             val aboutMe: String = about_me.text.toString()
-            myRef.setValue(aboutMe)
+            db.updateAboutme(account_id = account_id!!,about_me = aboutMe)
+            recreate()
             hideSoftKeyboard(view)
         }
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         println("Item is $item")

@@ -1,8 +1,10 @@
 package com.example.qiweili.healthapp.pages
 
 import android.app.Activity
+import android.arch.persistence.room.Database
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -18,6 +20,7 @@ import com.example.qiweili.healthapp.R
 import com.example.qiweili.healthapp.health.HealthData
 import com.example.qiweili.healthapp.health.MyAdapter
 import com.example.qiweili.healthapp.health.home_details
+import com.example.qiweili.utils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.FitnessOptions
@@ -37,7 +40,7 @@ class HomeScreen : AppCompatActivity() {
     /**
      * Health data map. <Health Data Type, Value>
      */
-    var healthDataMap = mutableMapOf<String, Int>()
+    var healthDataListMap = mutableMapOf<String, MutableList<HealthData>>()
     var healthDataList = mutableListOf<HealthData>()
     var db : DatabaseHelper? = null
 
@@ -60,10 +63,11 @@ class HomeScreen : AppCompatActivity() {
         myDrawerToggle = drawer_layout.mDrawerToggle
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Home")
+
         /**
          * Create a database
          */
-        db = DatabaseHelper(this, "Health.db")
+        db = DatabaseHelper(this, utils.databaseName)
 
         DataView.layoutManager = LinearLayoutManager(DataView.context)
         if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), fitnessOptions)) {
@@ -103,9 +107,7 @@ class HomeScreen : AppCompatActivity() {
                     var total = 0
                     if (!dataset.isEmpty) {
                         total = dataset.dataPoints[0].getValue(Field.FIELD_STEPS).asInt()
-                        healthDataMap.put("Steps", total)
                         writeToDatabase(total, "Steps")
-                        readFromDatabase("Steps", 1)
                     } else {
 
                     }
@@ -117,27 +119,49 @@ class HomeScreen : AppCompatActivity() {
                     var total: Int
                     if (!dataset.isEmpty) {
                         total = dataset.dataPoints[0].getValue(Field.FIELD_CALORIES).asFloat().roundToInt()
-                        healthDataMap.put("Calories", total)
-                        //writeToDatabase(total, "Calories")
+                        writeToDatabase(total, "Calories")
                     } else {
 
                     }
                 }
     }
 
+    /**
+     * Read the data from database
+     * @param description what type of data you want to read
+     * @param index the index of you want to store in
+     * 0 is for Steps
+     * 1 is for calories
+     */
+
     fun readFromDatabase(description: String,index: Int) {
-        val account_id = FirebaseAuth.getInstance().currentUser?.uid
-        val steps = db?.getSteps(account_id!!)
-        healthDataList.add(HealthData(steps,"Steps"))
+        when(description){
+            DatabaseHelper.STEPS ->{
+                val steps = db?.getSteps(utils.account_id!!)
+                //healthDataList.add(HealthData(null,steps!![steps.size - 1],DatabaseHelper.STEPS))
+            }
+            DatabaseHelper.CAL_BURNED ->{
+                //val steps = db?.get(utils.account_id!!)
+                //healthDataList.add(HealthData(null,steps!![steps.size - 1],DatabaseHelper.STEPS))
+            }
+        }
+
     }
+    /**
+     * write the data from database
+     * @param description what type of data you want to write
+     * @param data the data you want to write
+     */
 
     fun writeToDatabase(data: Int, description: String) {
-        val account_id = FirebaseAuth.getInstance().currentUser?.uid
-        val success = db?.insertData(account_id,"Qiwei",data,null,null,null,null,null)
-        if(success == true){
-            //Toast.makeText(this,"Success " + data,Toast.LENGTH_SHORT).show()
-        }else{
-            Toast.makeText(this,"False",Toast.LENGTH_SHORT).show()
+        when(description){
+            DatabaseHelper.STEPS -> {
+                db?.updateSteps(data,utils.account_id!!)
+            }
+            DatabaseHelper.CAL_BURNED -> {
+                db?.updateCal_Burned(data,utils.account_id!!)
+            }
+
         }
 
     }
