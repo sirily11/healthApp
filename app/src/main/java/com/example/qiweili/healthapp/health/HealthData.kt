@@ -11,8 +11,6 @@ import android.accounts.AuthenticatorDescription
  * @param description the type of the data.
  * This should use the description text in Utils
  */
-class HealthData(val time : Int?, val data: Int?, val description: String?){
-
-
+class HealthData(var time : String?, var data: Int?, var description: String?){
 
 }

@@ -1,5 +1,6 @@
 package com.example.qiweili
 
+import com.example.qiweili.healthapp.health.HealthData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
@@ -71,6 +72,16 @@ class utils {
         }
 
         /**
+         * This is a helper method which would return the last object in the
+         * Mutablelist of health data
+         * @param list Mutablelist of HealthData
+         * @return the last index of the mutable list of Healthdata
+         */
+        fun getLastHealthData(list : MutableList<HealthData>?) : HealthData? {
+                return list?.get(list?.size - 1)
+        }
+
+        /**
          * Constant variable for the database's name
          */
         val databaseName = "Health.db"
@@ -79,6 +90,16 @@ class utils {
          * variable for current login user's id
          */
         val account_id = FirebaseAuth.getInstance().currentUser?.uid
+
+        /**
+         * Step's index
+         */
+        val steps_index = 0
+
+        /**
+         * Cal's index
+         */
+        val cal_burned_index = 1
 
     }
 

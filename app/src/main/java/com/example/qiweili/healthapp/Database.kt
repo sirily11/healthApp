@@ -7,11 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.example.qiweili.healthapp.Food.Meal
 import com.example.qiweili.healthapp.friend.Friends
 import com.example.qiweili.healthapp.health.HealthData
-import com.google.gson.Gson
+import com.example.qiweili.utils
 import com.google.gson.GsonBuilder
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 
 /**
@@ -39,15 +36,12 @@ class DatabaseHelper : SQLiteOpenHelper {
         val PROFILE_PIC = "PROFILE_PIC"
         var push_to_server = false
 
-
-
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS ${TABLE_NAME} ( ${ACCONT_ID} TEXT, " +
-                "${PROFILE_NAME} TEXT, ${STEPS} REAL, ${CAL_BURNED} REAL, ${CAL_INTAKE} TEXT, " +
-                "${FOOD_MAP} TEXT, ${ABOUTME_DESCRIBE} TEXT, ${FRIEND_LIST} TEXT, ${PROFILE_PIC} BLOB " +
-                "UNIQUE $ACCONT_ID)")
+        db.execSQL("CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (${ACCONT_ID} TEXT UNIQUE, " +
+                "${PROFILE_NAME} TEXT, ${STEPS} TEXT, ${CAL_BURNED} TEXT, ${CAL_INTAKE} TEXT, " +
+                "${FOOD_MAP} TEXT, ${ABOUTME_DESCRIBE} TEXT, ${FRIEND_LIST} TEXT, ${PROFILE_PIC} BLOB)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -94,7 +88,8 @@ class DatabaseHelper : SQLiteOpenHelper {
      */
     fun insertAccountID(account_id: String) {
         val db = this.writableDatabase
-        val success = db.execSQL("INSERT OR IGNORE INTO $TABLE_NAME($ACCONT_ID) VALUES($account_id)")
+        val success = db.execSQL("INSERT OR IGNORE INTO $TABLE_NAME($ACCONT_ID) VALUES('$account_id')")
+
     }
 
     /**
@@ -104,9 +99,11 @@ class DatabaseHelper : SQLiteOpenHelper {
      * @param account_id the account you want to update
      */
 
-    fun updateSteps(steps: Int?, account_id: String) {
+    fun updateSteps(steps: MutableList<HealthData>, account_id: String) {
         val db = this.writableDatabase
-        db.execSQL("UPDATE $TABLE_NAME SET $STEPS = '$steps' WHERE $ACCONT_ID = '$account_id'")
+        val gson = GsonBuilder().create()
+        val data = gson.toJson(steps)
+        db.execSQL("UPDATE $TABLE_NAME SET $STEPS = '$data' WHERE $ACCONT_ID = '$account_id'")
     }
 
     /**
@@ -116,9 +113,11 @@ class DatabaseHelper : SQLiteOpenHelper {
      * @param account_id the account you want to update
      */
 
-    fun updateCal_Burned(cal: Int?, account_id: String) {
+    fun updateCal_Burned(cal: MutableList<HealthData>, account_id: String) {
         val db = this.writableDatabase
-        db.execSQL("UPDATE $TABLE_NAME SET $CAL_BURNED = '$cal' WHERE $ACCONT_ID = '$account_id'")
+        val gson = GsonBuilder().create()
+        val data = gson.toJson(cal)
+        db.execSQL("UPDATE $TABLE_NAME SET $CAL_BURNED = '$data' WHERE $ACCONT_ID = '$account_id'")
     }
 
     /**
@@ -134,7 +133,7 @@ class DatabaseHelper : SQLiteOpenHelper {
     }
 
     /**
-     * This method will update the profile name in the database
+     * This method will update the profile name  in the database
      * @param steps the steps number you want to update for
      * the account id
      * @param account_id the account you want to update
@@ -183,18 +182,30 @@ class DatabaseHelper : SQLiteOpenHelper {
         }
     }
 
-    fun getSteps(account_id: String): List<HealthData>? {
+
+    /**
+     * Get the list of steps data from sql database
+     * @param account_id the account you want to get
+     * @return mutable list of health data
+     */
+    fun getSteps(account_id: String): MutableList<HealthData>? {
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT $STEPS FROM $TABLE_NAME 'WHERE $ACCONT_ID = $account_id'", null)
         val stepsJson = mutableListOf<String>()
         val gson = GsonBuilder().create()
         with(cursor) {
             while (moveToNext()) {
-                val step = getString(0)
+                val step : String? = getString(0)
+                if(step == null){
+                    return null
+                }
                 stepsJson.add(step)
             }
         }
-        val steps = gson.fromJson(stepsJson[0],Array<HealthData>::class.java).toMutableList()
+        if (stepsJson.size < 1) {
+            return null
+        }
+        val steps = gson.fromJson(stepsJson[0], Array<HealthData>::class.java).toMutableList()
         if (steps.size > 0) {
             return steps
         } else {
@@ -202,16 +213,26 @@ class DatabaseHelper : SQLiteOpenHelper {
         }
     }
 
-    fun getCalsBurned(account_id: String): List<Int>? {
+    /**
+     * Get the list of cal_burned data from sql database
+     * @param account_id the account you want to get
+     * @return mutable list of health data
+     */
+    fun getCalsBurned(account_id: String): MutableList<HealthData>? {
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT $CAL_BURNED FROM $TABLE_NAME 'WHERE $ACCONT_ID = $account_id'", null)
-        val cals = mutableListOf<Int>()
+        val calJson = mutableListOf<String>()
+        val gson = GsonBuilder().create()
         with(cursor) {
             while (moveToNext()) {
-                val cal = getInt(0)
-                cals.add(cal)
+                val cal = getString(0)
+                calJson.add(cal)
             }
         }
+        if (calJson.size < 1) {
+            return null
+        }
+        val cals = gson.fromJson(calJson[0], Array<HealthData>::class.java).toMutableList()
         if (cals.size > 0) {
             return cals
         } else {
@@ -219,15 +240,6 @@ class DatabaseHelper : SQLiteOpenHelper {
         }
     }
 
-    fun isSameDay(dateOne : String, dateTwo : String) : Boolean{
-        return dateOne == dateTwo
-    }
-
-    fun getCurrentDate(): String {
-        val currentTime = Calendar.getInstance()
-        var date = currentTime.get(Calendar.DAY_OF_MONTH).toString()
-        return date
-    }
 
     private fun hasAccount(account_id: String): Boolean {
         val db = this.readableDatabase
@@ -239,7 +251,6 @@ class DatabaseHelper : SQLiteOpenHelper {
     private fun hasData(account_id: String, data: String): Boolean {
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT $data FROM $TABLE_NAME 'WHERE $ACCONT_ID = $account_id AND $data IS NOT NULL'", null)
-        println(cursor.count)
         return cursor.count > 0
     }
 

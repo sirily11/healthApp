@@ -4,15 +4,14 @@ import android.app.Activity
 import android.arch.persistence.room.Database
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.util.AsyncListUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import com.amitshekhar.DebugDB
 import com.example.qiweili.healthapp.DatabaseHelper
 import com.example.qiweili.healthapp.Drawer_menu
@@ -26,7 +25,6 @@ import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.DataType
 import com.google.android.gms.fitness.data.Field
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_homescreen.*
 import kotlinx.android.synthetic.main.collapsing_toolbar.*
 import kotlinx.android.synthetic.main.row_main_home.view.*
@@ -41,8 +39,8 @@ class HomeScreen : AppCompatActivity() {
      * Health data map. <Health Data Type, Value>
      */
     var healthDataListMap = mutableMapOf<String, MutableList<HealthData>>()
-    var healthDataList = mutableListOf<HealthData>()
-    var db : DatabaseHelper? = null
+    var displayDataList = mutableListOf<HealthData>()
+    var db: DatabaseHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +66,7 @@ class HomeScreen : AppCompatActivity() {
          * Create a database
          */
         db = DatabaseHelper(this, utils.databaseName)
-
+        db?.insertAccountID(utils.account_id!!)
         DataView.layoutManager = LinearLayoutManager(DataView.context)
         if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), fitnessOptions)) {
             GoogleSignIn.requestPermissions(
@@ -81,11 +79,13 @@ class HomeScreen : AppCompatActivity() {
             subscribe()
             readDaily()
             try {
-                readFromDatabase("Steps", 1)
-            }catch (e : IndexOutOfBoundsException){
+                readFromDatabase(DatabaseHelper.STEPS, 0)
+                readFromDatabase(DatabaseHelper.CAL_BURNED, 1)
+
+            } catch (e : Exception) {
 
             }
-            DataView.adapter = MyAdapter(this, data = healthDataList)
+            DataView.adapter = MyAdapter(this, data = displayDataList)
 
         }
     }
@@ -107,7 +107,8 @@ class HomeScreen : AppCompatActivity() {
                     var total = 0
                     if (!dataset.isEmpty) {
                         total = dataset.dataPoints[0].getValue(Field.FIELD_STEPS).asInt()
-                        writeToDatabase(total, "Steps")
+                        writeToDatabase(total, DatabaseHelper.STEPS, utils.steps_index)
+                        //displayDataList.add(HealthData(utils.getCurrentDate(),total,DatabaseHelper.STEPS))
                     } else {
 
                     }
@@ -119,7 +120,8 @@ class HomeScreen : AppCompatActivity() {
                     var total: Int
                     if (!dataset.isEmpty) {
                         total = dataset.dataPoints[0].getValue(Field.FIELD_CALORIES).asFloat().roundToInt()
-                        writeToDatabase(total, "Calories")
+                        writeToDatabase(total, DatabaseHelper.CAL_BURNED, utils.cal_burned_index)
+                        //displayDataList.add(HealthData(utils.getCurrentDate(),total,DatabaseHelper.CAL_BURNED))
                     } else {
 
                     }
@@ -134,15 +136,34 @@ class HomeScreen : AppCompatActivity() {
      * 1 is for calories
      */
 
-    fun readFromDatabase(description: String,index: Int) {
-        when(description){
-            DatabaseHelper.STEPS ->{
+    fun readFromDatabase(description: String, index: Int): MutableList<HealthData>? {
+        when (description) {
+            DatabaseHelper.STEPS -> {
                 val steps = db?.getSteps(utils.account_id!!)
-                //healthDataList.add(HealthData(null,steps!![steps.size - 1],DatabaseHelper.STEPS))
+                val lsteps = utils.getLastHealthData(steps)
+                if (lsteps != null) {
+                    if (displayDataList.size >0){
+                        displayDataList.set(0,lsteps)
+                    } else {
+                        displayDataList.add(lsteps)
+                    }
+                }
+                return steps
             }
-            DatabaseHelper.CAL_BURNED ->{
-                //val steps = db?.get(utils.account_id!!)
-                //healthDataList.add(HealthData(null,steps!![steps.size - 1],DatabaseHelper.STEPS))
+            DatabaseHelper.CAL_BURNED -> {
+                val cals = db?.getCalsBurned(utils.account_id!!)
+                val lcals = utils.getLastHealthData(cals)
+                if (lcals != null) {
+                    if (displayDataList.size >1){
+                        displayDataList.set(1,lcals)
+                    } else {
+                        displayDataList.add(lcals)
+                    }
+                }
+                return cals
+            }
+            else ->{
+                return null
             }
         }
 
@@ -153,17 +174,26 @@ class HomeScreen : AppCompatActivity() {
      * @param data the data you want to write
      */
 
-    fun writeToDatabase(data: Int, description: String) {
-        when(description){
+    fun writeToDatabase(data: Int, description: String, index: Int) {
+        val time = utils.getCurrentDate()
+        val historyData = mutableListOf<HealthData>()
+        if(readFromDatabase(description,index) != null) {
+            historyData.union(readFromDatabase(description, index)!!.toList())
+        }
+        if (historyData.size > 0 && utils.isSameDay(utils.getLastHealthData(historyData)?.time!!, time)) {
+            historyData.set(historyData.size - 1, HealthData(time, data, description))
+        } else {
+            historyData.add(HealthData(time, data, description))
+        }
+        when (description) {
             DatabaseHelper.STEPS -> {
-                db?.updateSteps(data,utils.account_id!!)
+                db?.updateSteps(historyData, utils.account_id!!)
             }
             DatabaseHelper.CAL_BURNED -> {
-                db?.updateCal_Burned(data,utils.account_id!!)
+                db?.updateCal_Burned(historyData, utils.account_id!!)
             }
 
         }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -186,10 +216,10 @@ class HomeScreen : AppCompatActivity() {
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         init {
-           view.card_view.setOnClickListener {
-               val intent = Intent(view.context, home_details::class.java)
-               view.context.startActivity(intent)
-           }
+            view.card_view.setOnClickListener {
+                val intent = Intent(view.context, home_details::class.java)
+                view.context.startActivity(intent)
+            }
         }
     }
 }
