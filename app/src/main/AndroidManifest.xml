@@ -30,6 +30,7 @@
         <activity android:name=".pages.SignUpScreen" />
         <activity android:name=".Food.MyWater" />
         <activity android:name=".health.home_details" />
+        <activity android:name=".pages.MealScreen"></activity>
     </application>
 
 </manifest>

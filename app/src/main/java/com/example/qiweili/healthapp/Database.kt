@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.example.qiweili.healthapp.Food.Meal
 import com.example.qiweili.healthapp.friend.Friends
 import com.example.qiweili.healthapp.health.HealthData
-import com.example.qiweili.utils
+import com.example.qiweili.healthapp.profile.MealEntry
 import com.google.gson.GsonBuilder
 
 
@@ -21,11 +21,31 @@ class DatabaseHelper : SQLiteOpenHelper {
 
 
     companion object {
+        /**
+         * Table name
+         */
         val TABLE_NAME = "HEALTH_DATA"
+
+        /**
+         * Account id
+         */
         val ACCONT_ID = "ACCOUNT_ID"
+
+        /**
+         * Profile name
+         */
         val PROFILE_NAME = "PROFILE_NAME"
+
+        /**
+         * Steps
+         */
         val STEPS = "STEPS"
+
+        /**
+         * Cal burned
+         */
         val CAL_BURNED = "CAL_BURNED"
+
         /**
          * This should be a food-list
          */
@@ -48,6 +68,9 @@ class DatabaseHelper : SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
     }
 
+    /**
+     * Push the data to the remote server
+     */
     fun push_to_server(setting: Boolean) {
         push_to_server = setting
     }
@@ -93,7 +116,7 @@ class DatabaseHelper : SQLiteOpenHelper {
     }
 
     /**
-     * This method will update the steps in the database
+     * This method will update the steps to the database
      * @param steps the steps number you want to update for
      * the account id
      * @param account_id the account you want to update
@@ -107,7 +130,7 @@ class DatabaseHelper : SQLiteOpenHelper {
     }
 
     /**
-     * This method will update the cal in the database
+     * This method will update the cal to the database
      * @param cal the cal number you want to update for
      * the account id
      * @param account_id the account you want to update
@@ -121,7 +144,21 @@ class DatabaseHelper : SQLiteOpenHelper {
     }
 
     /**
-     * This method will update the about me in the database
+     * This method will update the food to the database
+     * @param food the cal number you want to update for
+     * the account id
+     * @param account_id the account you want to update
+     */
+
+    fun updateFood(food: MutableList<MealEntry>, account_id: String) {
+        val db = this.writableDatabase
+        val gson = GsonBuilder().create()
+        val data = gson.toJson(food)
+        db.execSQL("UPDATE $TABLE_NAME SET $FOOD_MAP = '$data' WHERE $ACCONT_ID = '$account_id'")
+    }
+
+    /**
+     * This method will update the about me to the database
      * @param about_me the about me description you want to update for
      * the account id
      * @param account_id the account you want to update
@@ -133,7 +170,7 @@ class DatabaseHelper : SQLiteOpenHelper {
     }
 
     /**
-     * This method will update the profile name  in the database
+     * This method will update the profile name to the database
      * @param steps the steps number you want to update for
      * the account id
      * @param account_id the account you want to update
@@ -147,6 +184,13 @@ class DatabaseHelper : SQLiteOpenHelper {
 
         }
     }
+
+    /**
+     * This method will get the profile name from the database
+     * @param account_id the account you want to update
+     * @return  profile name from the database,
+     *          null if the profile name doesn't exist
+     */
 
     fun getProfileName(account_id: String): String? {
         val db = this.readableDatabase
@@ -164,6 +208,13 @@ class DatabaseHelper : SQLiteOpenHelper {
             return null
         }
     }
+
+    /**
+     * This method will get the about me from the database
+     * @param account_id the account you want to update
+     * @return  about me from the database,
+     *          null if the about me doesn't exist
+     */
 
     fun getAboutme(account_id: String): String? {
         val db = this.readableDatabase
@@ -186,7 +237,8 @@ class DatabaseHelper : SQLiteOpenHelper {
     /**
      * Get the list of steps data from sql database
      * @param account_id the account you want to get
-     * @return mutable list of health data
+     * @return mutable list of health data,
+     *  null if not exist
      */
     fun getSteps(account_id: String): MutableList<HealthData>? {
         val db = this.readableDatabase
@@ -195,8 +247,8 @@ class DatabaseHelper : SQLiteOpenHelper {
         val gson = GsonBuilder().create()
         with(cursor) {
             while (moveToNext()) {
-                val step : String? = getString(0)
-                if(step == null){
+                val step: String? = getString(0)
+                if (step == null) {
                     return null
                 }
                 stepsJson.add(step)
@@ -214,10 +266,39 @@ class DatabaseHelper : SQLiteOpenHelper {
     }
 
     /**
+     * Get the list of steps data from sql database
+     * @param account_id the account you want to get
+     * @return mutable list of meal data,
+     *  null if not exist
+     */
+    fun getFood(account_id: String): MutableList<MealEntry>? {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT $FOOD_MAP FROM $TABLE_NAME 'WHERE $ACCONT_ID = $account_id'", null)
+        val mealsJson = mutableListOf<String>()
+        val gson = GsonBuilder().create()
+        with(cursor) {
+            while (moveToNext()) {
+                val meal: String? = getString(0)
+                if (meal == null) {
+                    return null
+                }
+                mealsJson.add(meal)
+            }
+        }
+        if (mealsJson.size < 1) {
+            return null
+        }
+        val meals = gson.fromJson(mealsJson[0], Array<MealEntry>::class.java).toMutableList()
+       return meals
+    }
+
+    /**
      * Get the list of cal_burned data from sql database
      * @param account_id the account you want to get
-     * @return mutable list of health data
+     * @return mutable list of health data,
+     * null if not exist
      */
+
     fun getCalsBurned(account_id: String): MutableList<HealthData>? {
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT $CAL_BURNED FROM $TABLE_NAME 'WHERE $ACCONT_ID = $account_id'", null)
@@ -226,6 +307,9 @@ class DatabaseHelper : SQLiteOpenHelper {
         with(cursor) {
             while (moveToNext()) {
                 val cal = getString(0)
+                if (cal == null) {
+                    return null
+                }
                 calJson.add(cal)
             }
         }

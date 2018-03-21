@@ -121,6 +121,7 @@ class HomeScreen : AppCompatActivity() {
                     if (!dataset.isEmpty) {
                         total = dataset.dataPoints[0].getValue(Field.FIELD_CALORIES).asFloat().roundToInt()
                         writeToDatabase(total, DatabaseHelper.CAL_BURNED, utils.cal_burned_index)
+                        DataView.adapter.notifyDataSetChanged()
                         //displayDataList.add(HealthData(utils.getCurrentDate(),total,DatabaseHelper.CAL_BURNED))
                     } else {
 

@@ -67,8 +67,10 @@ class utils {
          */
         fun getCurrentDate(): String {
             val currentTime = Calendar.getInstance()
-            var date = currentTime.get(Calendar.DAY_OF_MONTH).toString()
-            return date
+            var day = currentTime.get(Calendar.DAY_OF_MONTH).toString()
+            var month = currentTime.get(Calendar.MONTH).toString()
+            var year = currentTime.get(Calendar.YEAR).toString()
+            return "${day}/${month}/${year}"
         }
 
         /**

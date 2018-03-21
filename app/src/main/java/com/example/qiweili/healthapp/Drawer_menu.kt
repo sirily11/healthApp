@@ -11,6 +11,7 @@ import android.view.Menu
 import com.example.qiweili.healthapp.friend.FriendScreen
 import com.example.qiweili.healthapp.Food.MyMeals
 import com.example.qiweili.healthapp.pages.HomeScreen
+import com.example.qiweili.healthapp.pages.MealScreen
 import com.example.qiweili.healthapp.profile.ProfileScreen
 
 /**
@@ -61,7 +62,7 @@ class Drawer_menu(context:Context, activity:Activity,
             when(item.itemId){
                 R.id.nav_Home -> goto { mContext.startActivity(Intent(mActivity, HomeScreen::class.java)) }
                 R.id.nav_Leader_board -> goto {  }
-                R.id.nav_Meal -> goto { mContext.startActivity(Intent(mActivity, MyMeals::class.java)) }
+                R.id.nav_Meal -> goto { mContext.startActivity(Intent(mActivity, MealScreen::class.java)) }
                 R.id.nav_Profile -> goto { mContext.startActivity(Intent(mActivity, ProfileScreen::class.java)) }
                 R.id.nav_Walkout -> goto {  }
                 R.id.nav_settings -> goto {  }
