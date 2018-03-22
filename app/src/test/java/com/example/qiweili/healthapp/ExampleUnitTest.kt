@@ -3,6 +3,10 @@ package com.example.qiweili.healthapp
 import android.arch.persistence.room.Database
 import android.content.Context
 import android.test.mock.MockContext
+import com.amitshekhar.utils.Utils
+import com.example.qiweili.healthapp.Food.Food
+import com.example.qiweili.healthapp.profile.FoodEntry
+import com.example.qiweili.healthapp.profile.MealEntry
 import com.example.qiweili.utils
 import org.junit.Test
 
@@ -17,13 +21,24 @@ import org.mockito.Mock
 class ExampleUnitTest {
 
     @Test
-    fun isSameDayTest(){
-        val day = DatabaseHelper.getCurrentDate()
-        assertTrue("This should be the same day",DatabaseHelper.isSameDay(day,day))
+    fun mealTest(){
+        val foods = mutableListOf<FoodEntry>()
+        foods.add(FoodEntry("Apple",100,100,100))
+        foods.add(FoodEntry("Banana",200,100,100))
+        val meal = MealEntry("0",foods,"Chicago")
+        assertEquals("Total calories should be 300",300,meal.getTotalCalories())
     }
+
     @Test
-    fun isSameDayTest2(){
-        val day = DatabaseHelper.getCurrentDate()
-        assertFalse("This should not be the same day",DatabaseHelper.isSameDay(day,(day.toInt()+1).toString()))
+    fun mealTest2(){
+        val foods = mutableListOf<FoodEntry>()
+        foods.add(FoodEntry("Apple",100,100,100))
+        foods.add(FoodEntry("Apple",200,100,100))
+        foods.add(FoodEntry("Apple",200,100,100))
+        val meal = MealEntry("0",foods,"Chicago")
+        val expected = arrayOf("Apple")
+        val real = MealEntry.getArrayofFoodsName(mutableListOf(meal,meal))
+        assertEquals("The array should only has one Apple",expected,real)
+        assertEquals("Total calories should be 500",500,meal.getTotalCalories())
     }
 }

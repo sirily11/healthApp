@@ -10,14 +10,7 @@ import java.util.*
  */
 class utils {
     companion object {
-        var mDatabase = FirebaseDatabase.getInstance()
-        init {
-            mDatabase.setPersistenceEnabled(true)
-        }
 
-        fun getDatabase(): FirebaseDatabase {
-            return mDatabase
-        }
 
         /**
          * This is a helper method which will generate a random double number
