@@ -10,6 +10,12 @@
 
 2. You can input your daily meals which will automatically memorized thier name, so you have a auto hint function for your next time inputs.
 
+## How to install?
+
+### Install with Android Studio
+Input Everything from this repostory and put them into your android studio, then finished.
+Remember create a Firebase Account and follow the instructions to setup your firebase project! Otherwise, you cannot login your app.
+
 
 
 
