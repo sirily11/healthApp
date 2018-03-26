@@ -63,7 +63,11 @@ class ProfileScreen : AppCompatActivity() {
         fab.setOnClickListener {
             view ->
             val aboutMe: String = about_me.text.toString()
+            val profileName = profile_name.text.toString()
             db.updateAboutme(account_id = account_id!!,about_me = aboutMe)
+            db.updateProfileName(profileName,utils.account_id)
+            db.push_to_server(DatabaseHelper.PROFILE_NAME)
+            db.push_to_server(DatabaseHelper.ABOUTME_DESCRIBE)
             recreate()
             hideSoftKeyboard(view)
         }
@@ -103,6 +107,8 @@ class ProfileScreen : AppCompatActivity() {
             val byteArray = stream.toByteArray()
             imageView2.setImageBitmap(image)
             db.updateProfileImage(byteArray,utils.account_id!!)
+            db.push_to_server(DatabaseHelper.PROFILE_PIC)
+
         }
     }
 }

@@ -27,7 +27,7 @@
         <activity android:name=".Food.deleteMeal" />
         <activity android:name=".pages.LoginScreen" />
         <activity android:name=".pages.HomeScreen" />
-        <activity android:name=".friend.FriendScreen" />
+        <activity android:name=".pages.FriendScreen" />
         <activity android:name=".pages.SignUpScreen" />
         <activity android:name=".Food.MyWater" />
         <activity android:name=".health.home_details" />

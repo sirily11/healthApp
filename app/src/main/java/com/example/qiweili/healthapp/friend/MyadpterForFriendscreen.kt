@@ -5,9 +5,8 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.example.qiweili.healthapp.DataAPI
 import com.example.qiweili.healthapp.R
-import com.squareup.picasso.Picasso
+import com.example.qiweili.healthapp.pages.FriendScreen
 import kotlinx.android.synthetic.main.row_main_friend.view.*
 
 class MyAdapterForFriendScreen(context: Context, data: MutableList<Friend>) :RecyclerView.Adapter<FriendScreen.ViewHolder>() {
@@ -52,8 +51,13 @@ class MyAdapterForFriendScreen(context: Context, data: MutableList<Friend>) :Rec
         }
 
         override fun onBindViewHolder(holder: FriendScreen.ViewHolder, position: Int) {
-            holder.view.profile_name.text = data[position].name
-            holder.view.about_me.text = data[position].aboutme
+            if(data.isNotEmpty()) {
+                holder.view.profile_name.text = data[position].name
+                holder.view.about_me.text = data[position].aboutme
+                if(data[position].getProfilePic() != null) {
+                    holder.view.imageView_profile.setImageBitmap(data[position].getProfilePic())
+                }
+            }
         }
 
 

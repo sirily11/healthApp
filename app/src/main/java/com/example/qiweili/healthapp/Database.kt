@@ -67,7 +67,7 @@ class DatabaseHelper : SQLiteOpenHelper {
 
         fun getBytes(bitmap: Bitmap): ByteArray {
             val stream = ByteArrayOutputStream()
-            bitmap.compress(CompressFormat.PNG, 0, stream)
+            bitmap.compress(CompressFormat.PNG, 100, stream)
             return stream.toByteArray()
         }
 
@@ -94,17 +94,55 @@ class DatabaseHelper : SQLiteOpenHelper {
         val client = OkHttpClient()
         val gson = GsonBuilder().create()
         when(selection){
-            DatabaseHelper.FOOD_MAP ->{
+            FOOD_MAP ->{
                 val data = gson.toJson(getFood(utils.account_id!!))
                 val request = Request.Builder()
-                        .url("http://192.168.86.105:8080/data/?${DatabaseHelper.ACCONT_ID}=${utils.account_id}" +
-                                "&${DatabaseHelper.FOOD_MAP}=$data")
+                        .url("http://52.207.147.141/data/?${ACCONT_ID}=${utils.account_id}" +
+                                "&${FOOD_MAP}=$data")
                         .get()
                         .build()
 
                 val response = client.newCall(request).enqueue(object : Callback{
                     override fun onResponse(call: Call?, response: Response?) {
                        println()
+                    }
+
+                    override fun onFailure(call: Call?, e: IOException?) {
+                        println()
+                    }
+
+                })
+            }
+            PROFILE_PIC ->{
+                val data = gson.toJson(getBytes(getProfileImage(utils.account_id!!)!!))
+                val request = Request.Builder()
+                        .url("http://52.207.147.141/data/?${ACCONT_ID}=${utils.account_id}" +
+                                "&${PROFILE_PIC}=$data")
+                        .get()
+                        .build()
+
+                val response = client.newCall(request).enqueue(object : Callback{
+                    override fun onResponse(call: Call?, response: Response?) {
+                        println()
+                    }
+
+                    override fun onFailure(call: Call?, e: IOException?) {
+                        println()
+                    }
+
+                })
+            }
+            PROFILE_NAME ->{
+                val data = gson.toJson(getProfileName(utils.account_id!!))
+                val request = Request.Builder()
+                        .url("http://52.207.147.141/data/?${ACCONT_ID}=${utils.account_id}" +
+                                "&${PROFILE_NAME}=$data")
+                        .get()
+                        .build()
+
+                val response = client.newCall(request).enqueue(object : Callback{
+                    override fun onResponse(call: Call?, response: Response?) {
+                        println()
                     }
 
                     override fun onFailure(call: Call?, e: IOException?) {
@@ -226,6 +264,20 @@ class DatabaseHelper : SQLiteOpenHelper {
     }
 
     /**
+     * This method will update the about me to the database
+     * @param image the image you want to update for
+     * the account id
+     * @param account_id the account you want to update
+     */
+
+    fun updateFriendList(friends : MutableList<Friend>, account_id: String) {
+        val gson = GsonBuilder().create()
+        val data = gson.toJson(friends)
+        val db = this.writableDatabase
+        db.execSQL("UPDATE $TABLE_NAME SET $FRIEND_LIST = '${data}' WHERE $ACCONT_ID = '$account_id'")
+    }
+
+    /**
      * This method will update the profile name to the database
      * @param steps the steps number you want to update for
      * the account id
@@ -234,11 +286,7 @@ class DatabaseHelper : SQLiteOpenHelper {
 
     fun updateProfileName(profile_name: String?, account_id: String) {
         val db = this.writableDatabase
-        if (hasData(account_id = account_id, data = PROFILE_NAME)) {
-            db.execSQL("UPDATE $TABLE_NAME SET $PROFILE_NAME = $profile_name WHERE $ACCONT_ID = '$account_id'")
-        } else {
-
-        }
+        db.execSQL("UPDATE $TABLE_NAME SET $PROFILE_NAME = '$profile_name' WHERE $ACCONT_ID = '$account_id'")
     }
 
     /**
@@ -375,6 +423,38 @@ class DatabaseHelper : SQLiteOpenHelper {
         val cals = gson.fromJson(calJson[0], Array<HealthData>::class.java).toMutableList()
         if (cals.size > 0) {
             return cals
+        } else {
+            return null
+        }
+    }
+
+    /**
+     * Get the list of cal_burned data from sql database
+     * @param account_id the account you want to get
+     * @return mutable list of health data,
+     * null if not exist
+     */
+
+    fun getFriends(account_id: String): MutableList<Friend>? {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT $FRIEND_LIST FROM $TABLE_NAME WHERE $ACCONT_ID = '$account_id'", null)
+        val friendJson = mutableListOf<String>()
+        val gson = GsonBuilder().create()
+        with(cursor) {
+            while (moveToNext()) {
+                val friend = getString(0)
+                if (friend == null) {
+                    return null
+                }
+                friendJson.add(friend)
+            }
+        }
+        if (friendJson.size < 1) {
+            return null
+        }
+        val friends = gson.fromJson(friendJson[0], Array<Friend>::class.java).toMutableList()
+        if (friends.size > 0) {
+            return friends
         } else {
             return null
         }

@@ -1,4 +1,4 @@
-package com.example.qiweili.healthapp.friend
+package com.example.qiweili.healthapp.pages
 
 import android.app.AlertDialog
 import android.content.Context
@@ -12,6 +12,9 @@ import android.view.*
 import com.example.qiweili.healthapp.DatabaseHelper
 import com.example.qiweili.healthapp.Drawer_menu
 import com.example.qiweili.healthapp.R
+import com.example.qiweili.healthapp.friend.Friend
+import com.example.qiweili.healthapp.friend.MyAdapterForFriendScreen
+import com.example.qiweili.utils
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_friend_screen.*
 import kotlinx.android.synthetic.main.alert_dialog_window_friend.view.*
@@ -23,6 +26,7 @@ import java.io.IOException
 class FriendScreen : AppCompatActivity() {
     var myDrawerToggle: ActionBarDrawerToggle? = null
     var friends = mutableListOf<Friend>()
+    val db = DatabaseHelper(this,utils.databaseName)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -31,8 +35,10 @@ class FriendScreen : AppCompatActivity() {
         friendlist.layoutManager = LinearLayoutManager(friendlist.context)
         windows_text.text = ""
         supportActionBar?.setTitle("Friends")
-        friendlist.adapter = MyAdapterForFriendScreen(this,friends)
-
+        if(db.getFriends(utils.account_id!!) != null){
+            friends = db.getFriends(utils.account_id!!)!!
+        }
+        friendlist.adapter = MyAdapterForFriendScreen(this, friends)
         val drawer_layout = Drawer_menu(this, this@FriendScreen, drawer_layout_friend, nav_friend)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         myDrawerToggle = drawer_layout.mDrawerToggle
@@ -81,7 +87,7 @@ class FriendScreen : AppCompatActivity() {
             if(!profileName.isEmpty()){
                 val gson = GsonBuilder().create()
                 val client = OkHttpClient()
-                val request = Request.Builder().url("http://192.168.86.105:8080/get/add_friends/?${DatabaseHelper.PROFILE_NAME}=$profileName").build()
+                val request = Request.Builder().url("http://52.207.147.141/get/add_friends/?${DatabaseHelper.PROFILE_NAME}=$profileName").build()
                 dialog.dismiss()
                 client.newCall(request).enqueue(object : Callback {
                     override fun onFailure(call: Call?, e: IOException?) {
@@ -93,8 +99,13 @@ class FriendScreen : AppCompatActivity() {
                         val gson = GsonBuilder().create()
                         val data = gson.fromJson(body, Array<Friend>::class.java).toList()
                         runOnUiThread {
-                            friends.add(data[0])
-                            friendlist.adapter.notifyDataSetChanged()
+                            try {
+                                friends.add(data[0])
+                                db.updateFriendList(friends,utils.account_id!!)
+                                friendlist.adapter.notifyDataSetChanged()
+                            }catch (e : Exception){
+                                println(e)
+                            }
                         }
                         dialog.dismiss()
                     }
@@ -146,6 +157,9 @@ class FriendScreen : AppCompatActivity() {
             }
         }
 
+        /**
+         * This is a helper function to show button's menu
+         */
         fun showMenu(v: View) {
             val popup = PopupMenu(view?.context!!, view, Gravity.NO_GRAVITY)
             popup.inflate(R.menu.menu_edit)
