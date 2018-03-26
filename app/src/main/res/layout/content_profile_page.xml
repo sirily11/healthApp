@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.qiweili.healthapp.profile.ProfileScreen"
+    tools:context="com.example.qiweili.healthapp.pages.ProfileScreen"
     tools:showIn="@layout/activity_profile_page">
 
     <android.support.v4.widget.NestedScrollView
@@ -26,14 +26,26 @@
 
             <ImageView
                 android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.082"
                 app:srcCompat="@drawable/default_profile" />
+
+            <Button
+                android:id="@+id/camera"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_above="@+id/fab"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="48dp"
+                android:background="@drawable/ic_camera_alt_black_48dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/profile_name"

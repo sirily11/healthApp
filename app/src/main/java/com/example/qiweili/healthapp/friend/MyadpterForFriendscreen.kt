@@ -10,7 +10,7 @@ import com.example.qiweili.healthapp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.row_main_friend.view.*
 
-class MyAdapterForFriendScreen(context: Context, data: List<DataAPI>) :RecyclerView.Adapter<FriendScreen.ViewHolder>() {
+class MyAdapterForFriendScreen(context: Context, data: MutableList<Friend>) :RecyclerView.Adapter<FriendScreen.ViewHolder>() {
         /**
          * Private variables
          */
@@ -48,17 +48,12 @@ class MyAdapterForFriendScreen(context: Context, data: List<DataAPI>) :RecyclerV
 
             val layoutInflater = LayoutInflater.from(parent?.context)
             val cellForRow = layoutInflater.inflate(R.layout.row_main_friend, parent, false)
-            return FriendScreen.ViewHolder(cellForRow)
+            return FriendScreen.ViewHolder(cellForRow,data,this)
         }
 
         override fun onBindViewHolder(holder: FriendScreen.ViewHolder, position: Int) {
-            holder?.view?.first_name?.text = data[position].first_name
-            holder?.view?.last_name?.text = data[position].last_name
-            val imageView = holder?.view?.imageView_profile
-            Picasso.with(myContext)
-                    .load(data.get(position).img_url)
-                    .resize(300,300)
-                    .into(imageView);
+            holder.view.profile_name.text = data[position].name
+            holder.view.about_me.text = data[position].aboutme
         }
 
 

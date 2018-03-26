@@ -5,6 +5,7 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_firstscreen.*
 import android.util.Log
 import com.example.qiweili.healthapp.R
+import com.google.firebase.auth.FirebaseAuth
 import io.vrinda.kotlinpermissions.PermissionCallBack
 import io.vrinda.kotlinpermissions.PermissionsActivity
 
@@ -18,8 +19,9 @@ class MainActivity : PermissionsActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_firstscreen)
+        FirebaseAuth.getInstance().signOut()
         LoginBtn.setOnClickListener {
-            val intent = Intent(this, HomeScreen::class.java)
+            val intent = Intent(this, LoginScreen::class.java)
             startActivity(intent)
         }
 

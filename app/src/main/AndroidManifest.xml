@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BODY_SENSORS" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Food.EditMeal" />
-        <activity android:name=".profile.ProfileScreen" />
+        <activity android:name=".pages.ProfileScreen" />
         <activity android:name=".Food.MyMeals" />
         <activity android:name=".Food.addFood" />
         <activity android:name=".Food.deleteMeal" />

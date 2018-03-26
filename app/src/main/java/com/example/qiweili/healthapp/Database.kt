@@ -4,11 +4,21 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.graphics.Bitmap
+import android.provider.BaseColumns
 import com.example.qiweili.healthapp.Food.Meal
-import com.example.qiweili.healthapp.friend.Friends
+import com.example.qiweili.healthapp.friend.Friend
 import com.example.qiweili.healthapp.health.HealthData
 import com.example.qiweili.healthapp.profile.MealEntry
+import com.example.qiweili.utils
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
+import okhttp3.*
+import org.json.JSONObject
+import java.io.IOException
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap.CompressFormat
+import java.io.ByteArrayOutputStream
 
 
 /**
@@ -54,14 +64,23 @@ class DatabaseHelper : SQLiteOpenHelper {
         val ABOUTME_DESCRIBE = "ABOUTME_DESCRIBE"
         val FRIEND_LIST = "FRIEND_LIST"
         val PROFILE_PIC = "PROFILE_PIC"
-        var push_to_server = false
 
+        fun getBytes(bitmap: Bitmap): ByteArray {
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(CompressFormat.PNG, 0, stream)
+            return stream.toByteArray()
+        }
+
+        // convert from byte array to bitmap
+        fun getImage(image: ByteArray): Bitmap {
+            return BitmapFactory.decodeByteArray(image, 0, image.size)
+        }
     }
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (${ACCONT_ID} TEXT UNIQUE, " +
                 "${PROFILE_NAME} TEXT, ${STEPS} TEXT, ${CAL_BURNED} TEXT, ${CAL_INTAKE} TEXT, " +
-                "${FOOD_MAP} TEXT, ${ABOUTME_DESCRIBE} TEXT, ${FRIEND_LIST} TEXT, ${PROFILE_PIC} BLOB)")
+                "${FOOD_MAP} TEXT, ${ABOUTME_DESCRIBE} TEXT, ${FRIEND_LIST} TEXT, ${PROFILE_PIC} TEXT)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -71,19 +90,42 @@ class DatabaseHelper : SQLiteOpenHelper {
     /**
      * Push the data to the remote server
      */
-    fun push_to_server(setting: Boolean) {
-        push_to_server = setting
+    fun push_to_server(selection : String) {
+        val client = OkHttpClient()
+        val gson = GsonBuilder().create()
+        when(selection){
+            DatabaseHelper.FOOD_MAP ->{
+                val data = gson.toJson(getFood(utils.account_id!!))
+                val request = Request.Builder()
+                        .url("http://192.168.86.105:8080/data/?${DatabaseHelper.ACCONT_ID}=${utils.account_id}" +
+                                "&${DatabaseHelper.FOOD_MAP}=$data")
+                        .get()
+                        .build()
+
+                val response = client.newCall(request).enqueue(object : Callback{
+                    override fun onResponse(call: Call?, response: Response?) {
+                       println()
+                    }
+
+                    override fun onFailure(call: Call?, e: IOException?) {
+                        println()
+                    }
+
+                })
+            }
+        }
+
     }
 
     fun insertData(account_id: String?, profile_name: String?, steps: Int?, cal_burned: Int?,
-                   friends: Friends?, cal_intake: Meal?, about_me: String?,
+                   friends: Friend?, cal_intake: Meal?, about_me: String?,
                    profile_pic: ByteArray?): Boolean {
 
         val db = this.writableDatabase
         val contentValue = ContentValues()
         val gson = GsonBuilder().create()
         val total_Cal = gson.toJson(cal_intake?.getCalIntake())
-        val friendsStr = gson.toJson(friends?.friendsName)
+        //val friendsStr = gson.toJson(friends?.friendsName)
 
         contentValue.put(ACCONT_ID, account_id)
         contentValue.put(PROFILE_NAME, profile_name)
@@ -170,6 +212,20 @@ class DatabaseHelper : SQLiteOpenHelper {
     }
 
     /**
+     * This method will update the about me to the database
+     * @param image the image you want to update for
+     * the account id
+     * @param account_id the account you want to update
+     */
+
+    fun updateProfileImage(image: ByteArray?, account_id: String) {
+        val gson = GsonBuilder().create()
+        val data = gson.toJson(image)
+        val db = this.writableDatabase
+        db.execSQL("UPDATE $TABLE_NAME SET $PROFILE_PIC = '${data}' WHERE $ACCONT_ID = '$account_id'")
+    }
+
+    /**
      * This method will update the profile name to the database
      * @param steps the steps number you want to update for
      * the account id
@@ -194,7 +250,7 @@ class DatabaseHelper : SQLiteOpenHelper {
 
     fun getProfileName(account_id: String): String? {
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT $PROFILE_NAME FROM $TABLE_NAME 'WHERE $ACCONT_ID = $account_id'", null)
+        val cursor = db.rawQuery("SELECT $PROFILE_NAME FROM $TABLE_NAME WHERE $ACCONT_ID = '$account_id'", null)
         val profile_name = mutableListOf<String>()
         with(cursor) {
             while (moveToNext()) {
@@ -218,7 +274,7 @@ class DatabaseHelper : SQLiteOpenHelper {
 
     fun getAboutme(account_id: String): String? {
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT $ABOUTME_DESCRIBE FROM $TABLE_NAME 'WHERE $ACCONT_ID = $account_id'", null)
+        val cursor = db.rawQuery("SELECT $ABOUTME_DESCRIBE FROM $TABLE_NAME WHERE $ACCONT_ID = '$account_id'", null)
         val about_me = mutableListOf<String>()
         with(cursor) {
             while (moveToNext()) {
@@ -242,7 +298,7 @@ class DatabaseHelper : SQLiteOpenHelper {
      */
     fun getSteps(account_id: String): MutableList<HealthData>? {
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT $STEPS FROM $TABLE_NAME 'WHERE $ACCONT_ID = $account_id'", null)
+        val cursor = db.rawQuery("SELECT $STEPS FROM $TABLE_NAME WHERE $ACCONT_ID = '$account_id'", null)
         val stepsJson = mutableListOf<String>()
         val gson = GsonBuilder().create()
         with(cursor) {
@@ -273,12 +329,12 @@ class DatabaseHelper : SQLiteOpenHelper {
      */
     fun getFood(account_id: String): MutableList<MealEntry>? {
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT $FOOD_MAP FROM $TABLE_NAME 'WHERE $ACCONT_ID = $account_id'", null)
+        val cursor = db.rawQuery("SELECT $FOOD_MAP FROM $TABLE_NAME WHERE $ACCONT_ID = '$account_id'", null)
         val mealsJson = mutableListOf<String>()
         val gson = GsonBuilder().create()
         with(cursor) {
             while (moveToNext()) {
-                val meal: String? = getString(0)
+                val meal: String? = getString(getColumnIndexOrThrow(FOOD_MAP))
                 if (meal == null) {
                     return null
                 }
@@ -301,7 +357,7 @@ class DatabaseHelper : SQLiteOpenHelper {
 
     fun getCalsBurned(account_id: String): MutableList<HealthData>? {
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT $CAL_BURNED FROM $TABLE_NAME 'WHERE $ACCONT_ID = $account_id'", null)
+        val cursor = db.rawQuery("SELECT $CAL_BURNED FROM $TABLE_NAME WHERE $ACCONT_ID = '$account_id'", null)
         val calJson = mutableListOf<String>()
         val gson = GsonBuilder().create()
         with(cursor) {
@@ -324,17 +380,44 @@ class DatabaseHelper : SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Get the list of image data from sql database
+     * @param account_id the account you want to get
+     * @return image,
+     * null if not exist
+     */
+
+    fun getProfileImage(account_id: String): Bitmap? {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT $PROFILE_PIC FROM $TABLE_NAME WHERE $ACCONT_ID = '$account_id'", null)
+        val imagesJson = mutableListOf<String>()
+        with(cursor) {
+            while (moveToNext()) {
+                val image = getString(0)
+                if (image == null) {
+                    return null
+                }
+                imagesJson.add(image)
+            }
+        }
+        if (imagesJson.size < 1) {
+            return null
+        }
+        val gson = GsonBuilder().create()
+        val images = gson.fromJson(imagesJson[0],ByteArray ::class.java)
+        return getImage(images)
+    }
 
     private fun hasAccount(account_id: String): Boolean {
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME 'WHERE $ACCONT_ID = $account_id'", null)
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $ACCONT_ID = '$account_id'", null)
         println(cursor.count)
         return cursor.count > 0
     }
 
     private fun hasData(account_id: String, data: String): Boolean {
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT $data FROM $TABLE_NAME 'WHERE $ACCONT_ID = $account_id AND $data IS NOT NULL'", null)
+        val cursor = db.rawQuery("SELECT $data FROM $TABLE_NAME WHERE $ACCONT_ID = '$account_id AND $data IS NOT NULL'", null)
         return cursor.count > 0
     }
 

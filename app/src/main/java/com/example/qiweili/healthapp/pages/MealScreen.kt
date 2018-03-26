@@ -18,7 +18,7 @@ import com.example.qiweili.healthapp.profile.FoodEntry
 import com.example.qiweili.healthapp.profile.MealEntry
 import com.example.qiweili.utils
 import kotlinx.android.synthetic.main.activity_meal.*
-import kotlinx.android.synthetic.main.alert_dialog_window.view.*
+import kotlinx.android.synthetic.main.alert_dialog_window_meal.view.*
 import kotlinx.android.synthetic.main.collapsing_toolbar.*
 import kotlinx.android.synthetic.main.row_main_meals.view.*
 
@@ -69,7 +69,7 @@ class MealScreen : AppCompatActivity() {
     fun showAddMealWindows() {
         val mBuilder = AlertDialog.Builder(this)
         val inflater = LayoutInflater.from(this)
-        val view = inflater.inflate(R.layout.alert_dialog_window, null)
+        val view = inflater.inflate(R.layout.alert_dialog_window_meal, null)
         view.food_list.layoutManager = LinearLayoutManager(view.food_list.context)
         view.food_list.adapter = AdapatersForFoods(foods)
         mBuilder.setView(view)
@@ -126,6 +126,7 @@ class MealScreen : AppCompatActivity() {
             val mealName = view.meal_name.text.toString()
             meals.add(MealEntry(utils.getCurrentDate(), foods, mealName))
             db.updateFood(meals, utils.account_id!!)
+            db.push_to_server(DatabaseHelper.FOOD_MAP)
             Toast.makeText(this,"Total Cal is ${meals.get(meals.size - 1).getTotalCalories()}",Toast.LENGTH_SHORT).show()
 
             foods.clear()
@@ -160,10 +161,10 @@ class MealScreen : AppCompatActivity() {
 
         fun showMenu(v: View) {
             val popup = PopupMenu(view?.context!!, view, Gravity.NO_GRAVITY)
-            popup.inflate(R.menu.menu_edit_meal)
+            popup.inflate(R.menu.menu_edit)
             popup.setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.delete_meal -> {
+                    R.id.delete -> {
                         meals?.removeAt(adapterPosition)
                         adapatersForMeal?.notifyDataSetChanged()
                         var db = DatabaseHelper(view.context, utils.databaseName)
