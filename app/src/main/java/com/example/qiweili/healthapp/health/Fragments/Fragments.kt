@@ -29,8 +29,13 @@ class Tab1Fragment() : Fragment() {
         graph.series2?.isAnimated = true
         view.graphView.addSeries(graph.series2)
         view.graphView.addSeries(graph.series)
+        view.graphView.viewport.isYAxisBoundsManual = true
+        view.graphView.viewport.isXAxisBoundsManual = true
+        view.graphView.viewport.setMinX(0.0)
         view.graphView.viewport.setMaxX(7.0)
-        view.graphView.viewport.isScalable = true
+        view.graphView.viewport.setMinY(0.0)
+        view.graphView.viewport.setMaxY(3000.0)
+
         return view
     }
 }

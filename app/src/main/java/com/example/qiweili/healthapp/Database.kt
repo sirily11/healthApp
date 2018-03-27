@@ -5,20 +5,17 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.graphics.Bitmap
-import android.provider.BaseColumns
+import android.graphics.Bitmap.CompressFormat
+import android.graphics.BitmapFactory
 import com.example.qiweili.healthapp.Food.Meal
+import com.example.qiweili.healthapp.Food.MealEntry
 import com.example.qiweili.healthapp.friend.Friend
 import com.example.qiweili.healthapp.health.HealthData
-import com.example.qiweili.healthapp.profile.MealEntry
 import com.example.qiweili.utils
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
 import okhttp3.*
-import org.json.JSONObject
-import java.io.IOException
-import android.graphics.BitmapFactory
-import android.graphics.Bitmap.CompressFormat
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 
 /**
@@ -90,11 +87,11 @@ class DatabaseHelper : SQLiteOpenHelper {
     /**
      * Push the data to the remote server
      */
-    fun push_to_server(selection : String) {
+    fun push_to_server(selection: String) {
         val client = OkHttpClient()
         val gson = GsonBuilder().create()
-        when(selection){
-            FOOD_MAP ->{
+        when (selection) {
+            FOOD_MAP -> {
                 val data = gson.toJson(getFood(utils.account_id!!))
                 val request = Request.Builder()
                         .url("http://52.207.147.141/data/?${ACCONT_ID}=${utils.account_id}" +
@@ -102,9 +99,9 @@ class DatabaseHelper : SQLiteOpenHelper {
                         .get()
                         .build()
 
-                val response = client.newCall(request).enqueue(object : Callback{
+                val response = client.newCall(request).enqueue(object : Callback {
                     override fun onResponse(call: Call?, response: Response?) {
-                       println()
+                        println()
                     }
 
                     override fun onFailure(call: Call?, e: IOException?) {
@@ -113,7 +110,7 @@ class DatabaseHelper : SQLiteOpenHelper {
 
                 })
             }
-            PROFILE_PIC ->{
+            PROFILE_PIC -> {
                 val data = gson.toJson(getBytes(getProfileImage(utils.account_id!!)!!))
                 val request = Request.Builder()
                         .url("http://52.207.147.141/data/?${ACCONT_ID}=${utils.account_id}" +
@@ -121,7 +118,7 @@ class DatabaseHelper : SQLiteOpenHelper {
                         .get()
                         .build()
 
-                val response = client.newCall(request).enqueue(object : Callback{
+                val response = client.newCall(request).enqueue(object : Callback {
                     override fun onResponse(call: Call?, response: Response?) {
                         println()
                     }
@@ -132,7 +129,7 @@ class DatabaseHelper : SQLiteOpenHelper {
 
                 })
             }
-            PROFILE_NAME ->{
+            PROFILE_NAME -> {
                 val data = gson.toJson(getProfileName(utils.account_id!!))
                 val request = Request.Builder()
                         .url("http://52.207.147.141/data/?${ACCONT_ID}=${utils.account_id}" +
@@ -140,7 +137,27 @@ class DatabaseHelper : SQLiteOpenHelper {
                         .get()
                         .build()
 
-                val response = client.newCall(request).enqueue(object : Callback{
+                val response = client.newCall(request).enqueue(object : Callback {
+                    override fun onResponse(call: Call?, response: Response?) {
+                        println()
+                    }
+
+                    override fun onFailure(call: Call?, e: IOException?) {
+                        println()
+                    }
+
+                })
+            }
+
+            ABOUTME_DESCRIBE -> {
+                val data = gson.toJson(getAboutme(utils.account_id!!))
+                val request = Request.Builder()
+                        .url("http://52.207.147.141/data/?${ACCONT_ID}=${utils.account_id}" +
+                                "&${ABOUTME_DESCRIBE}=$data")
+                        .get()
+                        .build()
+
+                val response = client.newCall(request).enqueue(object : Callback {
                     override fun onResponse(call: Call?, response: Response?) {
                         println()
                     }
@@ -270,7 +287,7 @@ class DatabaseHelper : SQLiteOpenHelper {
      * @param account_id the account you want to update
      */
 
-    fun updateFriendList(friends : MutableList<Friend>, account_id: String) {
+    fun updateFriendList(friends: MutableList<Friend>, account_id: String) {
         val gson = GsonBuilder().create()
         val data = gson.toJson(friends)
         val db = this.writableDatabase
@@ -393,7 +410,7 @@ class DatabaseHelper : SQLiteOpenHelper {
             return null
         }
         val meals = gson.fromJson(mealsJson[0], Array<MealEntry>::class.java).toMutableList()
-       return meals
+        return meals
     }
 
     /**
@@ -484,7 +501,7 @@ class DatabaseHelper : SQLiteOpenHelper {
             return null
         }
         val gson = GsonBuilder().create()
-        val images = gson.fromJson(imagesJson[0],ByteArray ::class.java)
+        val images = gson.fromJson(imagesJson[0], ByteArray::class.java)
         return getImage(images)
     }
 

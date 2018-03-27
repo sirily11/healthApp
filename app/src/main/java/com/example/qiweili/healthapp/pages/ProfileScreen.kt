@@ -44,7 +44,12 @@ class ProfileScreen : AppCompatActivity() {
         supportActionBar?.setTitle("Profile")
         myDrawerToggle = drawer_layout.mDrawerToggle
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        try {
+            profile_name.setText(db.getProfileName(utils.account_id!!))
+        }catch (e : Exception){
+            Log.d("Profile Screen",e.toString())
+        }
+
         drawer_layout.setListener()
         if(db.getProfileImage(utils.account_id!!) != null){
             imageView2.setImageBitmap(db.getProfileImage(utils.account_id))

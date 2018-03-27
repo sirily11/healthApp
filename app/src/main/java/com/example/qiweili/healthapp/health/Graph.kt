@@ -20,7 +20,7 @@ class GraphView(data : MutableList<Double>,spacing :Double){
     var series2 : BarGraphSeries<DataPoint>? = null
     init {
         var dataPoints = mutableListOf<DataPoint>()
-        var count = 1.0
+        var count = 0.0
         for(i in data){
             if(count % spacing != 0.0){
                 count++
@@ -34,9 +34,10 @@ class GraphView(data : MutableList<Double>,spacing :Double){
         series?.thickness = 8
         series?.isDrawDataPoints = true
 
-
         series2?.color = Color.argb(255, 255, 110, 0)
-        series2?.spacing = 50
+        series2?.spacing = 80
+        series2?.isDrawValuesOnTop = true
+
 
     }
 

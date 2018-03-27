@@ -1,4 +1,4 @@
-package com.example.qiweili.healthapp.profile
+package com.example.qiweili.healthapp.Food
 
 import android.content.Context
 import android.widget.ArrayAdapter
@@ -30,7 +30,7 @@ class MealEntry(var time: String, var foods: MutableList<FoodEntry>, var descrip
             val strings = mutableListOf<String>()
             for (i in meals) {
                 for (j in i.foods) {
-                    if(containsBefore(strings,j.name)){
+                    if(containsBefore(strings, j.name)){
                         continue
                     }
                     strings.add(j.name)
@@ -46,7 +46,7 @@ class MealEntry(var time: String, var foods: MutableList<FoodEntry>, var descrip
         fun getArrayofMealsName(meals: MutableList<MealEntry>): Array<String> {
             val strings = mutableListOf<String>()
             for (i in meals) {
-                if(containsBefore(strings,i.description)){
+                if(containsBefore(strings, i.description)){
                     continue
                 }
                 strings.add(i.description)
@@ -63,7 +63,7 @@ class MealEntry(var time: String, var foods: MutableList<FoodEntry>, var descrip
             val strings = mutableListOf<String>()
             for (i in meals) {
                 for (j in i.foods) {
-                    if(containsBefore(strings,j.calories.toString())){
+                    if(containsBefore(strings, j.calories.toString())){
                         continue
                     }
                     strings.add(j.calories.toString())

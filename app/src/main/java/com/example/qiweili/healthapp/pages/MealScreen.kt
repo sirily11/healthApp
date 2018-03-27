@@ -14,8 +14,8 @@ import com.example.qiweili.healthapp.Drawer_menu
 import com.example.qiweili.healthapp.Food.AdapatersForFoods
 import com.example.qiweili.healthapp.Food.AdapatersForMeals
 import com.example.qiweili.healthapp.R
-import com.example.qiweili.healthapp.profile.FoodEntry
-import com.example.qiweili.healthapp.profile.MealEntry
+import com.example.qiweili.healthapp.Food.FoodEntry
+import com.example.qiweili.healthapp.Food.MealEntry
 import com.example.qiweili.utils
 import kotlinx.android.synthetic.main.activity_meal.*
 import kotlinx.android.synthetic.main.alert_dialog_window_meal.view.*

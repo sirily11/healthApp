@@ -29,7 +29,7 @@ class home_details : AppCompatActivity() {
         tab_layout.addTab(tab_layout.newTab().setText("Week"))
         tab_layout.addTab(tab_layout.newTab().setText("Month"))
         tab_layout.addTab(tab_layout.newTab().setText("Year"))
-        mSectionsPageAdapter = SectionPageAdapter(supportFragmentManager)
+        mSectionsPageAdapter = SectionPageAdapter(this,supportFragmentManager)
         pager.adapter = mSectionsPageAdapter
         tab_layout.setupWithViewPager(pager)
     }

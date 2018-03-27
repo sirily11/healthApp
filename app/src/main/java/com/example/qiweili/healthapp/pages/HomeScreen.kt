@@ -1,7 +1,6 @@
 package com.example.qiweili.healthapp.pages
 
 import android.app.Activity
-import android.arch.persistence.room.Database
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.ActionBarDrawerToggle
@@ -12,10 +11,10 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import com.amitshekhar.DebugDB
 import com.example.qiweili.healthapp.DatabaseHelper
 import com.example.qiweili.healthapp.Drawer_menu
 import com.example.qiweili.healthapp.R
+import com.example.qiweili.healthapp.health.Calculate_Cals
 import com.example.qiweili.healthapp.health.HealthData
 import com.example.qiweili.healthapp.health.MyAdapter
 import com.example.qiweili.healthapp.health.home_details
@@ -75,12 +74,13 @@ class HomeScreen : AppCompatActivity() {
                     GoogleSignIn.getLastSignedInAccount(this),
                     fitnessOptions)
         } else {
-            DebugDB.getAddressLog()
+            //DebugDB.getAddressLog()
             subscribe()
             readDaily()
             try {
                 readFromDatabase(DatabaseHelper.STEPS, 0)
                 readFromDatabase(DatabaseHelper.CAL_BURNED, 1)
+                readFromDatabase(DatabaseHelper.CAL_INTAKE,2)
 
             } catch (e : Exception) {
 
@@ -157,6 +157,19 @@ class HomeScreen : AppCompatActivity() {
                 if (lcals != null) {
                     if (displayDataList.size >1){
                         displayDataList.set(1,lcals)
+                    } else {
+                        displayDataList.add(lcals)
+                    }
+                }
+                return cals
+            }
+            DatabaseHelper.CAL_INTAKE ->{
+                val data = db?.getFood(utils.account_id!!)
+                val cals = Calculate_Cals(data!!).getCals_intake()
+                val lcals = utils.getLastHealthData(cals)
+                if (lcals != null) {
+                    if (displayDataList.size >2){
+                        displayDataList.set(2,lcals)
                     } else {
                         displayDataList.add(lcals)
                     }

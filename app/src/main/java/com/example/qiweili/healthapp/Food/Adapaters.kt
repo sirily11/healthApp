@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.qiweili.healthapp.R
 import com.example.qiweili.healthapp.pages.MealScreen
-import com.example.qiweili.healthapp.profile.FoodEntry
-import com.example.qiweili.healthapp.profile.MealEntry
 import kotlinx.android.synthetic.main.row_main_meals.view.*
 
 /**
